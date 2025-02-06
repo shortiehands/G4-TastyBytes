@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, render_template
 
 app = Flask(__name__) #creates class for app
 
-API_KEY = "5932b65ddad54049a26bebc5ef881244"  # Replace with your Spoonacular API key
+API_KEY = "bfc95f65167e4a7e83366e9fc517e55f"  # Replace with your Spoonacular API key
 BASE_URL = "https://api.spoonacular.com/recipes/findByIngredients"
 
 
