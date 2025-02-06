@@ -6,6 +6,7 @@ app = Flask(__name__) #creates class for app
 API_KEY = "bfc95f65167e4a7e83366e9fc517e55f"  # Replace with your Spoonacular API key
 BASE_URL = "https://api.spoonacular.com/recipes/findByIngredients"
 
+favorites = []
 
 @app.route('/')
 def index():
@@ -33,6 +34,17 @@ def find_recipes():
         return jsonify(recipes)
     except requests.exceptions.RequestException as e:
         return jsonify({"error": "Failed to fetch recipes.", "details": str(e)}), 500
+
+@app.route('/favorite_recipe', methods=['POST'])
+def favorite_recipe():
+    data = request.json
+    recipe_id = data.get('recipeId')
+
+    if not recipe_id:
+        return jsonify({"error": "No recipe ID provided."}), 400
+
+    favorites.append(recipe_id)
+    return jsonify({"success": True})
 
 if __name__ == '__main__':
     app.run(debug=True)

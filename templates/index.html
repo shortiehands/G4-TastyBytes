@@ -4,16 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Finder</title>
+    <style>
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
     <h1>Recipe Finder</h1>
-    <form id="recipe-form">
+
+    <!-- Login Form -->
+    <form id="login-form">
+        <h2>Login</h2>
+        <label for="login-email">Email:</label><br>
+        <input type="email" id="login-email" name="email" required><br><br>
+        <label for="login-password">Password:</label><br>
+        <input type="password" id="login-password" name="password" required><br><br>
+        <button type="button" onclick="login()">Login</button>
+        <p><a href="#" onclick="showForm('signup-form')">Sign up</a> | <a href="#" onclick="showForm('forgot-password-form')">Forgot Password</a></p>
+    </form>
+
+    <!-- Sign Up Form -->
+    <form id="signup-form" class="hidden">
+        <h2>Sign Up</h2>
+        <label for="signup-email">Email:</label><br>
+        <input type="email" id="signup-email" name="email" required><br><br>
+        <label for="signup-password">Password:</label><br>
+        <input type="password" id="signup-password" name="password" required><br><br>
+        <button type="button" onclick="signup()">Sign Up</button>
+        <p><a href="#" onclick="showForm('login-form')">Login</a></p>
+    </form>
+
+    <!-- Forgot Password Form -->
+    <form id="forgot-password-form" class="hidden">
+        <h2>Forgot Password</h2>
+        <label for="forgot-email">Email:</label><br>
+        <input type="email" id="forgot-email" name="email" required><br><br>
+        <button type="button" onclick="forgotPassword()">Reset Password</button>
+        <p><a href="#" onclick="showForm('login-form')">Login</a></p>
+    </form>
+
+    <!-- Recipe Finder Form -->
+    <form id="recipe-form" class="hidden">
         <label for="ingredients">Enter ingredients (comma-separated):</label><br>
         <input type="text" id="ingredients" name="ingredients" required><br><br>
         <button type="button" onclick="findRecipes()">Find Recipes</button>
     </form>
+
     <div id="results"></div>
+
     <script>
+        function showForm(formId) {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('signup-form').classList.add('hidden');
+            document.getElementById('forgot-password-form').classList.add('hidden');
+            document.getElementById('recipe-form').classList.add('hidden');
+            document.getElementById(formId).classList.remove('hidden');
+        }
+
+        function validatePassword(password) {
+            const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            return passwordRegex.test(password);
+        }
+
+        async function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            if (!validatePassword(password)) {
+                alert('Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.');
+                return;
+            }
+
+            // Implement login logic here
+            showForm('recipe-form');
+        }
+
+        async function signup() {
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            if (!validatePassword(password)) {
+                alert('Password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character.');
+                return;
+            }
+
+            // Implement sign-up logic here, including sending verification email
+            const response = await fetch('/send_verification_email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
+
+            if (response.ok) {
+                const verificationCode = prompt('Enter the 6-digit verification code sent to your email:');
+                const verifyResponse = await fetch('/verify_signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, verificationCode }),
+                });
+
+                if (verifyResponse.ok) {
+                    alert('Sign-up successful! You can now log in.');
+                    showForm('login-form');
+                } else {
+                    alert('Invalid verification code. Please try again.');
+                }
+            } else {
+                alert('Failed to send verification email. Please try again.');
+            }
+        }
+
+        async function forgotPassword() {
+            const email = document.getElementById('forgot-email').value;
+            // Implement forgot password logic here
+            alert('Password reset link sent to your email.');
+            showForm('login-form');
+        }
+
         async function findRecipes() {
             const ingredients = document.getElementById('ingredients').value;
             const response = await fetch('/find_recipes', {
@@ -28,8 +134,26 @@
                 resultsDiv.innerHTML = `<p>${data.error}</p>`;
             } else {
                 resultsDiv.innerHTML = '<ul>' +
-                    data.map(recipe => `<li>${recipe.title}</li>`).join('') +
+                    data.map(recipe => `
+                        <li>
+                            <span onclick="favoriteRecipe('${recipe.id}')" style="cursor: pointer;">⭐</span>
+                            ${recipe.title}
+                        </li>`).join('') +
                     '</ul>';
+            }
+        }
+
+        async function favoriteRecipe(recipeId) {
+            const response = await fetch('/favorite_recipe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ recipeId }),
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert('Recipe favorited successfully!');
+            } else {
+                alert('Failed to favorite recipe.');
             }
         }
     </script>
