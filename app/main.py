@@ -12,7 +12,7 @@ security = HTTPBearer()
 
 app = FastAPI(
     title="Recipe App",
-    description="An application to quickly give recipes based on avaialble ingredients",
+    description="An application to quickly formulate recipe ideas based on avaialble ingredients",
     version="1.0.0",
 )
 
