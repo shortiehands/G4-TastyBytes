@@ -6,3 +6,6 @@ coverage/        # Test coverage reports (if using Jest)
 Thumbs.db
 .env
 *.pyc
+node_modules
+src/.DS_Store
+venv/
