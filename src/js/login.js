@@ -28,20 +28,21 @@ const Login = () => {
             { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
         );
 
-        // Directly access the data from the response
-        const data = response.data; // No need for response.json()
-
-        if (response.status === 200) { // Check for successful response
-            localStorage.setItem("token", data.access_token);
-            navigate("/dashboard");
-        } else {
-            setError("Invalid username or password");
-        }
-    } catch (error) {
+        const data = response.data;
+        localStorage.setItem("token", data.access_token);
+        navigate("/dashboard");
+  
+      } catch (error) {
         setError("Error connecting to server");
-        console.error(error); // Log the error for debugging
-    }
-};
+        console.error("Login error:", error);
+  
+        if (error.response) {
+          setError(error.response.data.message || "Invalid username or password");
+        } else {
+          setError("Error connecting to server");
+        }
+      }
+    };
 
   return (
     <div className="wrapper-login">
