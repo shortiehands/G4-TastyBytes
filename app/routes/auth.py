@@ -17,7 +17,7 @@ async def login(username: str = Form(...), password: str = Form(...)):
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     
 @router.post("/registration", status_code=status.HTTP_201_CREATED)
-def register(username: str, email: str, password: str):
+async def register(username: str = Form(...), email: str = Form(...), password: str = Form(...)):
     """
     Register a new user with a distinct username, email, and password.
     """
