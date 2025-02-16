@@ -17,6 +17,6 @@ Base.metadata.create_all(bind=engine)
 app.include_router(recipe.router)
 
 # Serve static files (CSS, JS if needed)
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
+#app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 
