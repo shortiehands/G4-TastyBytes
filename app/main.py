@@ -7,6 +7,9 @@ from app.exceptions import ServiceException
 
 # Uncomment this line to include the Auth router
 from app.routes import auth
+from fastapi.middleware.cors import CORSMiddleware
+
+
 
 security = HTTPBearer()
 
@@ -14,6 +17,14 @@ app = FastAPI(
     title="Recipe App",
     description="An application to quickly formulate recipe ideas based on avaialble ingredients",
     version="1.0.0",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Allow frontend requests
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
 )
 
 # Setup logging
