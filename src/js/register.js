@@ -18,10 +18,20 @@ const Register = () => {
         document.body.classList.remove("registration-page-background"); // Remove when leaving the page
       };
     }, []);
+  
+    const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    if (!validateEmail(email)) {
+      setError("Invalid email format");
+      return;
+    }
+    
     try {
       const response = await axios.post("http://127.0.0.1:8000/registration",  // Replace with backend URL
         new URLSearchParams({ username, email, password }),
