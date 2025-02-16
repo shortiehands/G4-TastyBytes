@@ -5,3 +5,4 @@ coverage/        # Test coverage reports (if using Jest)
 .DS_Store        # macOS system file
 Thumbs.db
 .env
+*.pyc

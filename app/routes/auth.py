@@ -1,12 +1,19 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Form
 from app.services.cognito_service import CognitoService
 from app.exceptions import ServiceException
+#from pydantic import BaseModel
 
 router = APIRouter()
 cognito_service = CognitoService()
 
+# Define the request body model
+#class LoginRequest(BaseModel):
+    #username: str
+    #password: str
+
 @router.post("/login")
-def login(username: str, password: str):
+#async def login(data: LoginRequest):
+async def login(username: str = Form(...), password: str = Form(...)):
     """
     Login endpoint to authenticate users and return a JWT token.
     """
