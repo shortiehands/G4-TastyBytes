@@ -22,7 +22,6 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    console.log("Testing console logs");
     try {
       const response = await axios.post("http://127.0.0.1:8000/login",   // Replace with backend URL
         new URLSearchParams({ username, password }),
@@ -30,8 +29,6 @@ const Login = () => {
       );
 
       const data = await response.json();
-
-      console.log("Fetched Data:", data);
 
       if (response.ok) {
         localStorage.setItem("token", data.access_token);
@@ -41,7 +38,6 @@ const Login = () => {
       }
     } catch (error) {
       setError("Error connecting to server");
-      console.log("Fetched Data:", data);
     }
   };
 
