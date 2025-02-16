@@ -23,23 +23,25 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/login",   // Replace with backend URL
-        new URLSearchParams({ username, password }),
-        { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
-      );
+        const response = await axios.post("http://127.0.0.1:8000/login", 
+            new URLSearchParams({ username, password }),
+            { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+        );
 
-      const data = await response.json();
+        // Directly access the data from the response
+        const data = response.data; // No need for response.json()
 
-      if (response.ok) {
-        localStorage.setItem("token", data.access_token);
-        navigate("/dashboard");
-      } else {
-        setError("Invalid username or password");
-      }
+        if (response.status === 200) { // Check for successful response
+            localStorage.setItem("token", data.access_token);
+            navigate("/dashboard");
+        } else {
+            setError("Invalid username or password");
+        }
     } catch (error) {
-      setError("Error connecting to server");
+        setError("Error connecting to server");
+        console.error(error); // Log the error for debugging
     }
-  };
+};
 
   return (
     <div className="wrapper-login">
