@@ -1,1 +1,1 @@
-# ModernSoftware2025
+# Tasty Bytes - a simple recipe search app
