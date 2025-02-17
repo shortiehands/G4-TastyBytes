@@ -180,3 +180,87 @@ body.login-page-background {
   .login-link p a:hover {
     text-decoration: underline;
   }
+
+  .otp-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .otp-popup-box {
+    background-color: #B5C99A;
+    color: #2E4A3D;
+    padding: 20px 30px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+.otp-input {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 16px;
+  border: 2px solid #8A9A79;
+  border-radius: 40px;
+  outline: none;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.otp-input:focus {
+  border-color: #2E4A3D;
+}
+
+* Submit Button */
+.otp-submit-button {
+  width: 50%;
+  height: 45px;
+  background: #fff;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 50px;
+}
+
+.otp-popup-heading {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2E4A3D;
+}
+
+.otp-popup .close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  border: none;
+  background: none;
+  color: #2E4A3D;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
