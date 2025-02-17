@@ -32,8 +32,8 @@ def create_recipe_post( request: Request,
     db: Session = Depends(get_db)):
     recipe_data = RecipeCreate(title=title, description=description,ingredients=ingredients, steps=steps)   
     create_recipe(db, recipe_data)
-    #return RedirectResponse("/", status_code=303)
-    return {"message": "Recipe added successfully!"}
+    return RedirectResponse("/", status_code=303)
+   
 
 @router.post("/delete/{recipe_id}")
 def delete_recipe_post(recipe_id: int, db: Session = Depends(get_db)):
