@@ -33,7 +33,7 @@ async def register(username: str = Form(...), email: str = Form(...), password: 
     
 # Can we improve the code quality of the following endpoint implementation?
 @router.post("/confirmation")
-def confirm(username: str, confirmation_code: str):
+async def confirm(username: str = Form(...), confirmation_code: str = Form(...)):
     """
     Confirm the user's email address using the code sent by Cognito.
     """
