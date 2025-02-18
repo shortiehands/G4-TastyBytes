@@ -29,8 +29,11 @@ const Login = () => {
         );
 
         const data = response.data;
+        localStorage.setItem("username", data.tokens.username);
         localStorage.setItem("token", data.access_token);
-        navigate("/dashboard");
+        navigate("/recipes");
+        
+
   
       } catch (error) {
         setError("Error connecting to server");

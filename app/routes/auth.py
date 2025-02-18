@@ -1,9 +1,12 @@
-from fastapi import APIRouter, HTTPException, status, Form
+from fastapi import APIRouter, Request, HTTPException, status, Form
 from app.services.cognito_service import CognitoService
 from app.exceptions import ServiceException
 
+
 router = APIRouter()
 cognito_service = CognitoService()
+
+
 
 @router.post("/login")
 async def login(username: str = Form(...), password: str = Form(...)):
@@ -12,6 +15,7 @@ async def login(username: str = Form(...), password: str = Form(...)):
     """
     try:
         tokens = cognito_service.authenticate_user(username, password)
+        tokens["username"] = username 
         return {"message": "Login successful", "tokens": tokens}
     except ServiceException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
