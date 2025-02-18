@@ -1,46 +1,105 @@
-from fastapi import APIRouter, Depends, Request
+# app/routes/recipe.py
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
-from fastapi import Form
+from typing import List
 
-from app.db.session import SessionLocal
-from app.schema.recipe import RecipeCreate
-from app.services.recipe_service import get_recipes, create_recipe, delete_recipe, update_recipe
+from app.dependencies.get_username import get_username
+from app.db.session import get_db  # This is the dependency that provides a DB session
+from app.models.recipe import Recipe
+from app.schema.recipe import RecipeCreate, RecipeUpdate, RecipeInDB
 
-router = APIRouter()
-templates = Jinja2Templates(directory="app/templates")
+router = APIRouter(prefix="/recipes", tags=["recipes"])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+@router.get("/", response_model=List[RecipeInDB])
+def read_recipes(
+    username: str = Depends(get_username),
+    db: Session = Depends(get_db),
+):
+    """
+    Get all recipes created by the user.
+    """
+    recipes = db.query(Recipe).filter(Recipe.owner == username).all()
+    return recipes
 
-@router.get("/")
-def read_recipes(request: Request, db: Session = Depends(get_db),username: str = Depends(get_current_user)):
-    recipes = get_recipes(db, username)
-    return templates.TemplateResponse("index.html", {"request": request, "recipes": recipes})
+@router.post("/", response_model=RecipeInDB)
+def create_recipe(
+    recipe_in: RecipeCreate,
+    username: str = Depends(get_username),
+    db: Session = Depends(get_db),
+):
+    """
+    Create a new recipe for the current user.
+    """
+    new_recipe = Recipe(
+        title=recipe_in.title,
+        type=recipe_in.type,
+        ingredients=recipe_in.ingredients,
+        steps=recipe_in.steps,
+        owner=username,
+    )
+    db.add(new_recipe)
+    db.commit()
+    db.refresh(new_recipe)
+    return new_recipe
 
-@router.post("/create/")
-def create_recipe_post( request: Request,
-    title: str = Form(...),
-    description: str = Form(...),
-    ingredients: str = Form(...),
-    steps: str = Form(...),
-    db: Session = Depends(get_db), username: str = Depends(get_current_user)):
-    recipe_data = RecipeCreate(title=title, description=description,ingredients=ingredients, steps=steps)   
-    create_recipe(db, recipe_data, username)
-    return RedirectResponse("/", status_code=303)
-   
+@router.get("/{recipe_id}", response_model=RecipeInDB)
+def read_recipe(
+    recipe_id: int,
+    username: str = Depends(get_username),
+    db: Session = Depends(get_db),
+):
+    """
+    Get a specific recipe if it belongs to the current user.
+    """
+    recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
+    if not recipe or recipe.owner != username:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Recipe not found"
+        )
+    return recipe
 
-@router.post("/delete/{recipe_id}")
-def delete_recipe_post(recipe_id: int, db: Session = Depends(get_db)):
-    delete_recipe(db, recipe_id)
-    return RedirectResponse("/", status_code=303)
+@router.put("/{recipe_id}", response_model=RecipeInDB)
+def update_recipe(
+    recipe_id: int,
+    recipe_in: RecipeUpdate,
+    username: str = Depends(get_username),
+    db: Session = Depends(get_db),
+):
+    """
+    Update a recipe if it belongs to the current user.
+    """
+    recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
+    if not recipe or recipe.owner != username:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Recipe not found or not yours"
+        )
 
-@router.post("/update/")
-def update_recipe_post(id: int = Form(...), title: str = Form(...), description: str = Form(...), ingredients: str = Form(...), steps: str = Form(...), db: Session = Depends(get_db)):
-    update_recipe(db, id, title, description, ingredients, steps)
-    return RedirectResponse("/", status_code=303)
+    recipe.title = recipe_in.title
+    recipe.type = recipe_in.type
+    recipe.ingredients = recipe_in.ingredients
+    recipe.steps = recipe_in.steps
+
+    db.commit()
+    db.refresh(recipe)
+    return recipe
+
+@router.delete("/{recipe_id}")
+def delete_recipe(
+    recipe_id: int,
+    username: str = Depends(get_username),
+    db: Session = Depends(get_db),
+):
+    """
+    Delete a recipe if it belongs to the current user.
+    """
+    recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
+    if not recipe or recipe.owner != username:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Recipe not found or not yours"
+        )
+    db.delete(recipe)
+    db.commit()
+    return {"detail": "Recipe deleted"}

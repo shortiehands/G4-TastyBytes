@@ -31,11 +31,12 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
-Base.metadata.create_all(bind=engine)
+
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 # Global exception handler for HTTP exceptions
 @app.exception_handler(HTTPException)
@@ -73,7 +74,7 @@ app.include_router(recipe.router)
 # Uncomment this line to include the Auth router
 app.include_router(auth.router, prefix="", tags=["Auth"])
 
-
+#app.mount("/public", StaticFiles(directory="public"), name="public")
 # Serve static files (CSS, JS if needed)
 #app.mount("/static", StaticFiles(directory="app/static"), name="static")
 

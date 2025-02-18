@@ -1,15 +1,15 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./login";
-import Dashboard from "./dashboard";
 import Register from "./register";
+import RecipesPage from "./RecipesPage"; // Import your recipes page
 
 const App = () => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/recipes" element={<RecipesPage />} />
       <Route path="/register" element={<Register />} />
     </Routes>
   );
