@@ -19,8 +19,8 @@ def get_db():
         db.close()
 
 @router.get("/")
-def read_recipes(request: Request, db: Session = Depends(get_db)):
-    recipes = get_recipes(db)
+def read_recipes(request: Request, db: Session = Depends(get_db),username: str = Depends(get_current_user)):
+    recipes = get_recipes(db, username)
     return templates.TemplateResponse("index.html", {"request": request, "recipes": recipes})
 
 @router.post("/create/")
@@ -29,9 +29,9 @@ def create_recipe_post( request: Request,
     description: str = Form(...),
     ingredients: str = Form(...),
     steps: str = Form(...),
-    db: Session = Depends(get_db)):
+    db: Session = Depends(get_db), username: str = Depends(get_current_user)):
     recipe_data = RecipeCreate(title=title, description=description,ingredients=ingredients, steps=steps)   
-    create_recipe(db, recipe_data)
+    create_recipe(db, recipe_data, username)
     return RedirectResponse("/", status_code=303)
    
 

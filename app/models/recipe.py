@@ -9,3 +9,4 @@ class Recipe(Base):
     description = Column(String)
     ingredients = Column(String)
     steps = Column(String)
+    username = Column(String, index=True)

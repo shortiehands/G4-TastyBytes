@@ -2,14 +2,15 @@ from sqlalchemy.orm import Session
 from app.models.recipe import Recipe
 from app.schema.recipe import RecipeCreate
 
-def get_recipes(db: Session):
-    return db.query(Recipe).all()
+def get_recipes(db: Session, username: str):
+    return db.query(Recipe).filter(Recipe.username == username).all()
 
-def get_recipe(db: Session, recipe_id: int):
-    return db.query(Recipe).filter(Recipe.id == recipe_id).first()
+def get_recipe(db: Session, recipe_id: int, username: str):
+    return db.query(Recipe).filter(Recipe.id == recipe_id, Recipe.username == username).first()
 
-def create_recipe(db: Session, recipe: RecipeCreate):
-    new_recipe = Recipe(title=recipe.title, description=recipe.description, ingredients=recipe.ingredients, steps=recipe.steps)
+
+def create_recipe(db: Session, recipe: RecipeCreate,username: str):
+    new_recipe = Recipe(title=recipe.title, description=recipe.description, ingredients=recipe.ingredients, steps=recipe.steps, username=username)
     db.add(new_recipe)
     db.commit()
     db.refresh(new_recipe)

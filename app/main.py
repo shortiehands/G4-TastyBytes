@@ -6,10 +6,6 @@ from app.db.session import engine, Base
 app = FastAPI()
 
 
-
-
-
-
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
