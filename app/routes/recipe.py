@@ -1,8 +1,10 @@
 # app/routes/recipe.py
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Query,HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-
+import httpx
+from dotenv import load_dotenv
+import os
 from app.dependencies.get_username import get_username
 from app.db.session import get_db  # This is the dependency that provides a DB session
 from app.models.recipe import Recipe
@@ -10,6 +12,34 @@ from app.schema.recipe import RecipeCreate, RecipeUpdate, RecipeInDB
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
+load_dotenv()
+
+API_KEY = os.getenv("SPOONACULAR_API_KEY")
+BASE_URL = "https://api.spoonacular.com/recipes/findByIngredients"
+
+
+@router.get("/search_recipes")
+async def search_recipes(ingredients: str = Query(..., description="Comma-separated list of ingredients")):
+    """
+    Fetch recipes based on ingredients from Spoonacular API.
+    """
+    if not ingredients:
+        raise HTTPException(status_code=400, detail="Please provide at least one ingredient.")
+
+    params = {
+        "ingredients": ingredients,
+        "number": 10,
+        "apiKey": API_KEY
+    }
+
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(BASE_URL, params=params)
+            response.raise_for_status()
+            return response.json()
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=500, detail=f"Error fetching recipes: {str(e)}")
+        
 @router.get("/", response_model=List[RecipeInDB])
 def read_recipes(
     username: str = Depends(get_username),

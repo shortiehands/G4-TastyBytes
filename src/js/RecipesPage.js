@@ -11,6 +11,9 @@ export default function RecipesPage() {
   const [steps, setSteps] = useState("");
   const [editId, setEditId] = useState(null);
   const [error, setError] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const[searchTerm, setSearchTerm] = useState("");
+
 
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
@@ -41,6 +44,33 @@ export default function RecipesPage() {
       setError("Error fetching recipes");
     }
   };
+
+  const handleSearch = async () => {
+    if (!searchTerm.trim()) {
+      setError("Please enter at least one ingredient to search.");
+      return;
+    }
+    setError("");
+    try {
+      const response = await fetch(`${BASE_URL}/recipes/search_recipes?ingredients=${encodeURIComponent(searchTerm)}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setSearchResults(data);
+      } else {
+        setError("Failed to fetch recipes based on search.");
+      }
+    } catch (err) {
+      console.error("Error searching recipes:", err);
+      setError("Error searching recipes.");
+    }
+  };
+
+  
+
   
   useEffect(() => {
     fetchRecipes();
@@ -124,7 +154,39 @@ export default function RecipesPage() {
     <div style={styles.container}>
       <h1 style={styles.heading}>Manage Your Recipes</h1>
 
+      <div style={styles.searchContainer}>
+        <input
+          style={styles.searchInput}
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by ingredients (comma separated)"
+        />
+        <button style={styles.searchButton} onClick={handleSearch}>
+          Search
+        </button>
+        <button style={styles.searchButton} onClick={fetchRecipes}>
+          Show All
+        </button>
+      </div>
+
       {error && <p style={styles.error}>{error}</p>}
+
+      {searchResults.length > 0 && (
+        <div style={styles.cardGrid}>
+          {searchResults.map((item) => (
+            <div key={item.id} style={styles.card}>
+              <h3 style={{ marginBottom: "10px" }}>{item.title}</h3>
+              <img
+              src={item.image}
+              alt={item.title}
+              style={{ width: "200px", borderRadius: "8px" }}
+        />
+      </div>
+    ))}
+  </div>
+)}
+
 
       {/* Recipe Form */}
       <form onSubmit={handleSubmit} style={styles.form}>
@@ -138,6 +200,7 @@ export default function RecipesPage() {
             required
           />
         </div>
+
 
         <div style={styles.formGroup}>
           <label style={styles.label}>Type:</label>
@@ -186,6 +249,8 @@ export default function RecipesPage() {
         </div>
       </form>
 
+        
+
       {/* Recipe Table */}
       <table style={styles.table}>
         <thead>
@@ -229,7 +294,8 @@ export default function RecipesPage() {
 // Inline CSS Styles (basic example)
 const styles = {
   container: {
-    maxWidth: "800px",
+    width: "90%",          // 90% of the browser window
+    maxWidth: "1200px",
     margin: "40px auto",
     padding: "20px",
     fontFamily: "Arial, sans-serif",
@@ -246,6 +312,30 @@ const styles = {
     color: "red",
     textAlign: "center",
     marginBottom: "10px",
+  },
+
+  searchContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",    // vertically center items
+    marginBottom: "20px",
+    gap: "10px",
+  },
+  searchInput: {
+    padding: "10px",
+    fontSize: "16px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+    width: "400px",          // increase the width
+  },
+  searchButton: {
+    backgroundColor: "#3182ce",
+    color: "#fff",
+    border: "none",
+    padding: "10px 20px",    // make the button a bit wider
+    fontSize: "16px",
+    borderRadius: "4px",
+    cursor: "pointer",
   },
   form: {
     marginBottom: "30px",
@@ -300,6 +390,18 @@ const styles = {
   },
   deleteButton: {
     backgroundColor: "#e53e3e",
+  },
+  cardGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+    gap: "20px",
+    marginBottom: "30px",
+  },
+  card: {
+    padding: "20px",
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
   },
   table: {
     width: "100%",
