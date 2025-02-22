@@ -21,10 +21,19 @@ const Register = () => {
         document.body.classList.remove("registration-page-background"); // Remove when leaving the page
       };
     }, []);
-  
-    const validateEmail = (email) => {
+
+  const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
+  };
+  
+  const validateUsername = (username) => {
+    return username.length >= 6;
+  };
+  
+  const validatePassword = (password) => {
+    const re = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+    return re.test(password);
   };
 
   const handleRegister = async (e) => {
@@ -34,7 +43,17 @@ const Register = () => {
       setError("Invalid email format");
       return;
     }
-    
+
+    if (!validateUsername(username)) {
+      setError("Username must be at least 6 characters long");
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError("Password must be at least 8 characters long, contain at least one uppercase letter and one special character");
+      return;
+    }  
+
     try {
       const response = await axios.post("http://127.0.0.1:8000/registration",  // Replace with backend URL
         new URLSearchParams({ username, email, password }),
@@ -75,7 +94,7 @@ const handleOtpSubmit = async (otp) => {
     }
   } catch (error) {
     console.error("Error during OTP verification:", error);
-    alert(error.response?.data?.detail || "Invalid OTP");
+    alert(error.response?.data?.detail || "You already have an account. Please login.");
   }
 };
 
