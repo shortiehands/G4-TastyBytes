@@ -27,7 +27,7 @@ def get_completion_for_messages(messages, model=_model):
 def create_messages(text):
     return [{
         "role": "system",
-        "content": "You are a professional chef specializing in creating unique and delicious recipes. When given a dish description or a set of ingredients, provide a complete recipe that includes an overview, a list of ingredients and detailed, step-by-step cooking instructions. Format your response with an 'Overview:' section first, followed by an 'Ingredients:' section with the list of ingredients, and a 'Steps:' section with numbered instructions."
+        "content": "You are a professional chef specializing in creating unique and delicious recipes. When given a dish description or a set of ingredients, provide a complete recipe that includes a creative 'Recipe Name', an overview, a list of ingredients, and detailed, step-by-step cooking instructions. Format your response with a 'Recipe Name:' section first, followed by an 'Overview:' section that summarizes the flavor profile, cooking techniques, and any unique elements of the dish, then an 'Ingredients:' section, and finally a 'Steps:' section with numbered instructions."
         },
         {
         "role": "user",
@@ -35,9 +35,12 @@ def create_messages(text):
         }
     ]
 
+def get_recipe(text):
+    messages = create_messages(text)
+    return get_completion_for_messages(messages)
+
 # Example usage
 if __name__ == "__main__":
     prompt_text = "A gluten-free, dairy-free chocolate cake with no refined sugar"
-    messages = create_messages(prompt_text)
-    result = get_completion_for_messages(messages)
+    result = get_recipe(prompt_text)
     print(result)
