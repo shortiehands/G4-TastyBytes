@@ -9,6 +9,7 @@ export const colors = {
   mediumGrey: "#666666",
   deepOrange: "#E36432",
   lightGrey: "#DDDDDD",
+  slateGrey: "#7c828a",
   black: "#252525",
   lightBlack: "#0000000d",
   greyWhite: "#f5f5ef",
@@ -24,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
         font-size: 0.875rem; 
         line-height: 1;
         color: ${colors.black};
-        background-color: ${colors.white};
+        background-color: ${colors.peach};
 
         @media screen and (max-width: 720px) {
             font-size: 12px;
@@ -45,11 +46,11 @@ const GlobalStyle = createGlobalStyle`
 
     .btn-primary {
         --bs-btn-color: white;
-        --bs-btn-bg: ${colors.orange};
-        --bs-btn-border-color: ${colors.orange};
+        --bs-btn-bg: ${colors.deepOrange};
+        --bs-btn-border-color: ${colors.deepOrange};
         --bs-btn-hover-color: white;
-        --bs-btn-hover-bg: ${colors.peach};
-        --bs-btn-hover-border-color:${colors.peach};
+        --bs-btn-hover-bg: ${colors.orange};
+        --bs-btn-hover-border-color:${colors.orange};
         --bs-btn-focus-shadow-rgb: none;
         --bs-btn-active-color: white;
         --bs-btn-active-bg: ${colors.orange};
@@ -59,6 +60,57 @@ const GlobalStyle = createGlobalStyle`
             background-color: ${colors.orange};
         }
     }
+
+        .form-control { 
+        display: block;
+        width: 100%;
+        height: calc(1em + 1.5rem + 0.125rem);
+        padding: 0.375rem 1rem;
+        text-indent: 0.25rem;
+        text-indent: 0.25rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1;
+        color: ${colors.black};
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 0.063rem solid ${colors.deepOrange};
+        border-radius: 0.375rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; 
+    
+        @media screen and (max-width: 720px) {
+            font-size: 13px;
+        }
+    }
+        @media (prefers-reduced-motion: reduce) {
+            .form-control {
+            transition: none; } }
+        .form-control::-ms-expand {
+            background-color: transparent;
+            border: 0; }
+        .form-control:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #495057; }
+        .form-control:focus {
+            color: ${colors.black};
+            background-color: #fff;
+            border-color: ${colors.deepOrange};
+            outline: ${colors.orange} solid 2px;
+            box-shadow: 0.5rem 0.5rem 0.25rem rgba(0, 0, 0, 0.075); }
+        }
+        .form-control::placeholder {
+            color: ${colors.slateGrey}; 
+            font-size: 0.813rem;
+
+            @media screen and (max-width: 720px) {
+                font-size: 13px;
+            }
+        }
+        .form-control:focus + label {
+            color: ${colors.deepOrange};
+        }
+
 `;
 
 export default GlobalStyle;

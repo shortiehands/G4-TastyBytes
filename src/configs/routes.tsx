@@ -2,7 +2,7 @@ export const paths = {
     home: "home",
     login: "login",
     notFound: "not-found",
-    searchRecipe: "search-recipe",
+    generateRecipeAI: "generate-recipe-AI",
 }
 
 export const allowSearchParamsPaths: string[] = [

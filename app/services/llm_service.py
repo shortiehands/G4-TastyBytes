@@ -19,10 +19,17 @@ client = openai.OpenAI(
 #     print(f"- {model.id}")
 
 def get_completion_for_messages(messages, model=_model):
-    response = client.chat.completions.create(
+    try:
+        response = client.chat.completions.create(
         messages=messages, model=model,
     )
-    return response.choices[0].message.content
+        return response.choices[0].message.content
+    except openai.OpenAIError as e:
+        print(f"API Error: {e}")
+        return {"error": "Failed to fetch response"}
+    except Exception as e:
+        print(f"Unexpected Error: {e}")
+        return {"error": "Unexpected server error"}
 
 def create_messages(text):
     return [{
@@ -35,12 +42,12 @@ def create_messages(text):
         }
     ]
 
-def get_recipe(text):
+def generate_recipe(text):
     messages = create_messages(text)
     return get_completion_for_messages(messages)
 
 # Example usage
 if __name__ == "__main__":
     prompt_text = "A gluten-free, dairy-free chocolate cake with no refined sugar"
-    result = get_recipe(prompt_text)
+    result = generate_recipe(prompt_text)
     print(result)

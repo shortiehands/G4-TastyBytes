@@ -18,7 +18,7 @@ const CustomContainer: React.FC<CustomContainerProps> = ({
   className,
 }) => {
   return (
-    <MainContainer style={mainStyle ? mainStyle : {margin: "3% 10%"}} className={className}>
+    <MainContainer className={className}>
       <Card style={cardStyle}>
         <Card.Body style={bodyStyle} className={className}>{children}</Card.Body>
       </Card>
