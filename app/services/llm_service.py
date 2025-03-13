@@ -1,5 +1,6 @@
 import openai
 import os
+import re
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -11,7 +12,7 @@ _api_key = os.getenv("GROQ_API_KEY")
 
 client = openai.OpenAI(
     api_key=_api_key,
-    base_url=_base_url,
+    base_url=_base_url
 )
 
 # print("Available Models:")
@@ -34,7 +35,7 @@ def get_completion_for_messages(messages, model=_model):
 def create_messages(text):
     return [{
         "role": "system",
-        "content": "You are a professional chef specializing in creating unique and delicious recipes. When given a dish description or a set of ingredients, provide a complete recipe that includes a creative 'Recipe Name', an overview, a list of ingredients, and detailed, step-by-step cooking instructions. Format your response with a 'Recipe Name:' section first, followed by an 'Overview:' section that summarizes the flavor profile, cooking techniques, and any unique elements of the dish, then an 'Ingredients:' section, and finally a 'Steps:' section with numbered instructions."
+        "content": "You are a professional chef specializing in creating unique and delicious recipes. When given a dish description or a set of ingredients, provide a complete recipe that includes a creative recipe name, a concise overview, a list of ingredients, and detailed, step-by-step cooking instructions. Format your response with a 'Recipe Name:' section first, followed by an 'Overview:' section that summarizes the flavor profile, cooking techniques, and any unique elements of the dish, then an 'Ingredients:' section, and finally a 'Steps:' section with numbered instructions."
         },
         {
         "role": "user",
@@ -42,9 +43,41 @@ def create_messages(text):
         }
     ]
 
+def post_process(response_text: str):
+    """
+    Extracts the recipe name, overview, ingredients, and steps from the response text.
+    """
+    # Define regex patterns for extracting sections
+    recipe_name_pattern = r"Recipe Name:\s*(.*)"
+    overview_pattern = r"Overview:\s*(.*?)\n\nIngredients:"
+    ingredients_pattern = r"Ingredients:\n(.*?)\n\nSteps:"
+    steps_pattern = r"Steps:\n(.*)"
+
+    # Extract sections using regex
+    recipe_name_match = re.search(recipe_name_pattern, response_text)
+    overview_match = re.search(overview_pattern, response_text, re.DOTALL)
+    ingredients_match = re.search(ingredients_pattern, response_text, re.DOTALL)
+    steps_match = re.search(steps_pattern, response_text, re.DOTALL)
+
+    # Process extracted data
+    recipe_name = recipe_name_match.group(1).strip() if recipe_name_match else "Unknown"
+    overview = overview_match.group(1).strip() if overview_match else "No overview available"
+    ingredients = ingredients_match.group(1).strip().split("\n- ") if ingredients_match else []
+    steps = steps_match.group(1).strip().split("\n") if steps_match else []
+
+    return {
+        "recipe_name": recipe_name,
+        "overview": overview,
+        "ingredients": ingredients,
+        "steps": steps
+    }
+
+
 def generate_recipe(text):
     messages = create_messages(text)
-    return get_completion_for_messages(messages)
+    response = get_completion_for_messages(messages)
+    return post_process(response)
+    # return get_completion_for_messages(messages)
 
 # Example usage
 if __name__ == "__main__":

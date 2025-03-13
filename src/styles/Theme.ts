@@ -13,6 +13,8 @@ export const colors = {
   black: "#252525",
   lightBlack: "#0000000d",
   greyWhite: "#f5f5ef",
+  lightGreen: "#E5F6DF",
+  lightBrown: "#ECDFCC",
 };
 
 const GlobalStyle = createGlobalStyle`
@@ -55,13 +57,15 @@ const GlobalStyle = createGlobalStyle`
         --bs-btn-active-color: white;
         --bs-btn-active-bg: ${colors.orange};
         --bs-btn-active-border-color: ${colors.orange};
+        --bs-btn-disabled-bg: ${colors.orange};
+        --bs-btn-disabled-border-color: ${colors.orange};
         
         :focus {
             background-color: ${colors.orange};
         }
     }
 
-        .form-control { 
+    .form-control {
         display: block;
         width: 100%;
         height: calc(1em + 1.5rem + 0.125rem);
@@ -91,7 +95,7 @@ const GlobalStyle = createGlobalStyle`
             border: 0; }
         .form-control:-moz-focusring {
             color: transparent;
-            text-shadow: 0 0 0 #495057; }
+            text-shadow: 0 0 0rgb(179, 190, 201); }
         .form-control:focus {
             color: ${colors.black};
             background-color: #fff;

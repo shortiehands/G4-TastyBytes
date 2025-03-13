@@ -8,7 +8,7 @@ import os
 from app.dependencies.get_username import get_username
 from app.db.session import get_db  # This is the dependency that provides a DB session
 from app.models.recipe import Recipe
-from app.schema.recipe import RecipeCreate, RecipeUpdate, RecipeInDB
+from app.schema.recipe import LLMRecipe, RecipeCreate, RecipeUpdate, RecipeInDB
 from pydantic import BaseModel
 from app.services.llm_service import generate_recipe
 
@@ -137,7 +137,7 @@ def delete_recipe(
     return {"detail": "Recipe deleted"}
 
     
-@router.post("/generate_recipe", summary="Generate Recipe LLM")
+@router.post("/generate_recipe", summary="Generate Recipe LLM", response_model=LLMRecipe)
 def generate_llm_recipe(data: dict = Body(...)):
     """
     Generate a recipe based on the provided prompt using an LLM.
@@ -147,6 +147,6 @@ def generate_llm_recipe(data: dict = Body(...)):
         raise HTTPException(status_code=400, detail="Prompt is required.")
     try:
         recipe = generate_recipe(prompt)
-        return {"recipe": recipe}
+        return recipe
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

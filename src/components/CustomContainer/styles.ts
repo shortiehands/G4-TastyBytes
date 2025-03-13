@@ -12,15 +12,27 @@ const MainContainer = styled.div`
     }
   }
 
-  .card {
-    border-radius: 0.625rem;
-    // box-shadow: 0rem 0rem 0.625rem ${colors.black};
-    background: transparent;
-    border: none;
+  &.generate-page {
+    margin: 5% 15%;
+
+    .card {
+      border-radius: 0.625rem;
+      background: transparent;
+      border: none;
+    }
   }
 
-  &.search-page {
-    margin: 5% 15%;
+  &.generate-response {
+    padding: 3rem 0;
+
+    .card {
+      padding: 1.5rem 1.75rem;
+      border-radius: 0;
+      box-shadow: 0rem 0rem 0.625rem ${colors.lightBlack};
+      background: ${colors.white};
+      border: none;
+    }
+  }
 `;
 
 export { MainContainer };

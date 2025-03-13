@@ -4,7 +4,7 @@ import { paths } from "../../configs/routes";
 import AppRedirector from "./AppRedirector";
 import Layout from "../../components/Layout";
 import HomePage from "../../pages/HomePage";
-import SearchRecipe from "../../pages/SearchRecipe";
+import GenerateRecipe from "../../pages/GenerateRecipe";
 
 const AppRouter = () => {
     globalThis["a"] = useNavigate();
@@ -14,7 +14,7 @@ const AppRouter = () => {
             <Layout>
                 <Routes>
                     <Route path={paths.home} element={<HomePage />} />
-                    <Route path={paths.generateRecipeAI} element={<SearchRecipe />} />
+                    <Route path={paths.generateRecipeAI} element={<GenerateRecipe />} />
                     {/* <Route path={paths.login} element={<Login />} /> */}
                 </Routes>
             </Layout>
