@@ -20,7 +20,7 @@ class RecipeInDB(RecipeBase):
     class Config:
         from_attributes = True 
 
-class LLMRecipe(BaseModel):
+class LLMRecipeResponse(BaseModel):
     recipe_name: str
     overview: str
     ingredients: list

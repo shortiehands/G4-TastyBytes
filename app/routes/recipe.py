@@ -8,8 +8,7 @@ import os
 from app.dependencies.get_username import get_username
 from app.db.session import get_db  # This is the dependency that provides a DB session
 from app.models.recipe import Recipe
-from app.schema.recipe import LLMRecipe, RecipeCreate, RecipeUpdate, RecipeInDB
-from pydantic import BaseModel
+from app.schema.recipe import LLMRecipeResponse, RecipeCreate, RecipeUpdate, RecipeInDB
 from app.services.llm_service import generate_recipe
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
@@ -137,7 +136,7 @@ def delete_recipe(
     return {"detail": "Recipe deleted"}
 
     
-@router.post("/generate_recipe", summary="Generate Recipe LLM", response_model=LLMRecipe)
+@router.post("/generate_recipe", summary="Generate Recipe LLM", response_model=LLMRecipeResponse)
 def generate_llm_recipe(data: dict = Body(...)):
     """
     Generate a recipe based on the provided prompt using an LLM.

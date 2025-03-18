@@ -14,6 +14,14 @@ const MainContainer = styled.div`
 
   &.generate-page {
     margin: 5% 15%;
+    
+    .form-control:focus {
+        color: ${colors.black};
+        background-color: #fff;
+        border-color: ${colors.deepOrange};
+        outline: ${colors.orange} solid 2px;
+        box-shadow: 0.5rem 0.5rem 0.25rem rgba(0, 0, 0, 0.075); }
+    }
 
     .card {
       border-radius: 0.625rem;
@@ -26,7 +34,7 @@ const MainContainer = styled.div`
     padding: 3rem 0;
 
     .card {
-      padding: 1.5rem 1.75rem;
+      padding: 1.25rem 3.5rem;
       border-radius: 0;
       box-shadow: 0rem 0rem 0.625rem ${colors.lightBlack};
       background: ${colors.white};

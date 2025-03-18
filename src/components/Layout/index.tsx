@@ -1,31 +1,28 @@
-import React, { useState } from "react";
-// import Menu from "components/Menu";
+import React from "react";
 import Header from "../Header";
 import { AppContainer, Main, AppBody } from "./styles";
+import { useLocation } from "react-router-dom";
+import { paths } from "../../configs/routes";
 
 interface LayoutProps {
   children: React.ReactNode;
   currentPath?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, currentPath }) => {
-//   const [menuOpen, setMenuOpen] = useState(false);
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const location = useLocation();
+  const pathName = location.pathname;
 
   return (
     <AppContainer>
       <Main>
-        <Header />
-        <AppBody>
-          {/* <Menu
-            currentPath={currentPath}
-            open={menuOpen}
-            setOpen={setMenuOpen}
-          />
-          {menuOpen && (
-            <MenuOverlay onClick={handleOnClickClose}>"</MenuOverlay>
-          )} */}
-          {children}
-        </AppBody>
+        {pathName === "/" + paths.home ||
+        pathName === "/" + paths.generateRecipeAI ? (
+          <Header />
+        ) : (
+          <></>
+        )}
+        <AppBody>{children}</AppBody>
       </Main>
     </AppContainer>
   );

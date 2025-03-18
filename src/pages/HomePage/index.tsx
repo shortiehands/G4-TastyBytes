@@ -3,6 +3,7 @@ import { BodyStyled, CustomCard, TitleStyled } from "./styles";
 import { HomeImg } from "../../components/Images";
 import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { paths } from "../../configs/routes";
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,10 +24,10 @@ const HomePage: React.FC = () => {
             borderRadius: "0",
           }}
           onClick={() => {
-            navigate("/generate-recipe-AI");
+            navigate("/" + paths.generateRecipeAI);
           }}
         >
-          Find Recipe
+          Generate Recipe
         </Button>
       </Card.ImgOverlay>
     </CustomCard>

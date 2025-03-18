@@ -19,6 +19,7 @@ const GenerateRecipe = () => {
     null
   );
   const [error, setError] = useState<string>("");
+  const [show, setShow] = useState<boolean>(false);
 
   // Call the FastAPI endpoint to generate a recipe from the prompt
   const generateRecipe = async (prompt: string): Promise<RecipeResponse> => {
@@ -56,7 +57,7 @@ const GenerateRecipe = () => {
       setLoading(false);
     }
 
-    console.log(recipeResponse?.recipe_name);
+    setShow(true);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,75 +81,83 @@ const GenerateRecipe = () => {
             {loading ? "Generating..." : "Generate"}
           </Button>
         </Form>
-        <CustomContainer className="generate-response">
-          {error && <p style={{ color: "red" }}>Error: {error}</p>}
-          {recipeResponse && (
-            <>
-              <Row>
-                <HeaderText className="header">
-                  {recipeResponse.recipe_name}
-                </HeaderText>
-              </Row>
-              <Row style={{ paddingBottom: "2rem" }}>
-                {recipeResponse.overview}
-              </Row>
-              <Row>
-                <Col md={12} lg={6}>
-                  <Card
-                    style={{
-                      borderRadius: "0.625rem",
-                      background: "#ECDFCC",
-                      border: "none",
-                      padding: "1rem 0",
-                    }}
-                  >
-                    <Card.Body>
-                      <HeaderText className="subHeader">Ingredients</HeaderText>
-                      <ListGroup>
-                        {recipeResponse.ingredients.map((ingredient, index) => (
-                          <ListGroup.Item
-                            key={index}
-                            style={{
-                              background: "transparent",
-                            }}
-                          >
-                            <p>•{ingredient}</p>
-                          </ListGroup.Item>
-                        ))}
-                      </ListGroup>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                <Col md={12} lg={6}>
-                  <Card
-                    style={{
-                      borderRadius: "0.625rem",
-                      background: "#ECDFCC",
-                      border: "none",
-                      padding: "1rem 0",
-                    }}
-                  >
-                    <Card.Body>
-                      <HeaderText className="subHeader">Steps</HeaderText>
-                      <ListGroup>
-                        {recipeResponse.steps.map((step, index) => (
-                          <ListGroup.Item
-                            key={index}
-                            style={{
-                              background: "transparent",
-                            }}
-                          >
-                            {step}
-                          </ListGroup.Item>
-                        ))}
-                      </ListGroup>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </>
-          )}
-        </CustomContainer>
+        {show ? (
+          <CustomContainer className="generate-response">
+            {error && <p style={{ color: "red" }}>Error: {error}</p>}
+            {recipeResponse && (
+              <>
+                <Row>
+                  <HeaderText className="header">
+                    {recipeResponse.recipe_name}
+                  </HeaderText>
+                </Row>
+                <Row style={{ paddingBottom: "2rem" }}>
+                  {recipeResponse.overview}
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <Card
+                      style={{
+                        borderRadius: "0.625rem",
+                        background: "#ECDFCC",
+                        border: "none",
+                        padding: "1rem 0",
+                      }}
+                    >
+                      <Card.Body>
+                        <HeaderText className="subHeader">
+                          Ingredients
+                        </HeaderText>
+                        <ListGroup>
+                          {recipeResponse.ingredients.map(
+                            (ingredient, index) => (
+                              <ListGroup.Item
+                                key={index}
+                                style={{
+                                  background: "transparent",
+                                }}
+                              >
+                                <p>- {ingredient}</p>
+                              </ListGroup.Item>
+                            )
+                          )}
+                        </ListGroup>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                  <Col md={12} lg={6}>
+                    <Card
+                      style={{
+                        borderRadius: "0.625rem",
+                        background: "#ECDFCC",
+                        border: "none",
+                        padding: "1rem 0",
+                      }}
+                    >
+                      <Card.Body>
+                        <HeaderText className="subHeader">Steps</HeaderText>
+                        <ListGroup>
+                          {recipeResponse.steps.map((step, index) => (
+                            <ListGroup.Item
+                              key={index}
+                              style={{
+                                background: "transparent",
+                              }}
+                            >
+                              {step}
+                            </ListGroup.Item>
+                          ))}
+                        </ListGroup>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              </>
+            )}
+          </CustomContainer>
+        ) : (
+          <></>
+        )}
       </CustomContainer>
     </div>
   );

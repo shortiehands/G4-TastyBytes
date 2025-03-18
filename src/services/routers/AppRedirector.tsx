@@ -16,7 +16,6 @@ interface AppRedirectorProps {
 const AppRedirector: React.FC<AppRedirectorProps> = ({ children }) => {
   const location = useLocation();
   const pathName = location.pathname;
-  console.log(pathName);
   const search = location.search;
   const origin = window.location.origin;
 
@@ -35,7 +34,7 @@ const AppRedirector: React.FC<AppRedirectorProps> = ({ children }) => {
 
     // in our case relativePath === ""
     if (relativePath === `${baseRouterPath}` || relativePath === "") {
-      return navigate(paths.home);
+      return navigate(paths.login);
     }
 
     if (!isValidPath(relativePath)) {

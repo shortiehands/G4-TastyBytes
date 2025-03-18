@@ -48,10 +48,10 @@ def post_process(response_text: str):
     Extracts the recipe name, overview, ingredients, and steps from the response text.
     """
     # Define regex patterns for extracting sections
-    recipe_name_pattern = r"Recipe Name:\s*(.*)"
-    overview_pattern = r"Overview:\s*(.*?)\n\nIngredients:"
-    ingredients_pattern = r"Ingredients:\n(.*?)\n\nSteps:"
-    steps_pattern = r"Steps:\n(.*)"
+    recipe_name_pattern = r"(?:\*\*Recipe Name:\*\*|Recipe Name:)\s*(.*)"
+    overview_pattern = r"(?:\*\*Overview:\*\*|Overview:)\s*(.*?)\s*(?:\*\*Ingredients:\*\*|Ingredients:)"
+    ingredients_pattern = r"(?:\*\*Ingredients:\*\*|Ingredients:)\s*\n?(.*?)(?:\s*(?:\*\*Steps:\*\*|Steps:))"
+    steps_pattern = r"(?:\*\*Steps:\*\*|Steps:)\s*\n?(.*)"
 
     # Extract sections using regex
     recipe_name_match = re.search(recipe_name_pattern, response_text)

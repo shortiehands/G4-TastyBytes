@@ -15,6 +15,7 @@ export const colors = {
   greyWhite: "#f5f5ef",
   lightGreen: "#E5F6DF",
   lightBrown: "#ECDFCC",
+  red: "#e84242",
 };
 
 const GlobalStyle = createGlobalStyle`
@@ -100,8 +101,8 @@ const GlobalStyle = createGlobalStyle`
             color: ${colors.black};
             background-color: #fff;
             border-color: ${colors.deepOrange};
-            outline: ${colors.orange} solid 2px;
-            box-shadow: 0.5rem 0.5rem 0.25rem rgba(0, 0, 0, 0.075); }
+            outline: 0;
+            box-shadow: none; 
         }
         .form-control::placeholder {
             color: ${colors.slateGrey}; 
@@ -114,7 +115,7 @@ const GlobalStyle = createGlobalStyle`
         .form-control:focus + label {
             color: ${colors.deepOrange};
         }
-
+}
 `;
 
 export default GlobalStyle;
