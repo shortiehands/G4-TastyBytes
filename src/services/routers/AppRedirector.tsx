@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
+import React from "react";
+import { useLocation } from "react-router";
 import { paths } from "../../configs/routes";
 import {
   allowSearchParams,
@@ -16,20 +16,32 @@ interface AppRedirectorProps {
 const AppRedirector: React.FC<AppRedirectorProps> = ({ children }) => {
   const location = useLocation();
   const pathName = location.pathname;
+  const search = location.search;
   const origin = window.location.origin;
 
-  const navigate = useNavigate();
+  // In our case pathName starts with "/" not baseRouterPath
+  if (!pathName.startsWith("/")) {
+    const path = ((path) => (path === "" ? paths.home : path))(
+      pathName.replace("/", "").trim()
+    );
 
-  useEffect(() => {
+    window.location.href = `${origin}${baseRouterPath}`;
+  } else {
     const relativePath = getRelativePath(pathName);
-    if (relativePath === `${baseRouterPath}` || relativePath === "") {
-      navigate(`/${paths.home}`, { replace: true });
-    } else if (!isValidPath(relativePath)) {
-      navigate(`/${paths.notFound}`, { replace: true });
-    }
-  }, [pathName, navigate]);
 
-  return <>{children}</>;
+    // in our case relativePath === ""
+    if (relativePath === `${baseRouterPath}` || relativePath === "") {
+      return navigate(paths.home);
+    }
+
+    if (!isValidPath(relativePath)) {
+      return navigate(paths.notFound);
+    } else {
+      return <>{children}</>;
+    }
+  }
+
+  return <></>;
 };
 
 export default AppRedirector;

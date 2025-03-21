@@ -15,47 +15,49 @@ import CheckAccess from "./CheckAccess";
 const AppRouter = () => {
   globalThis["a"] = useNavigate();
   return (
-    <Routes>
-      <Route path={paths.login} element={<Login />} />
-      <Route path={paths.signUp} element={<SignUp />} />
-      <Route path={paths.forgotPassword} element={<ForgotPassword />} />
-      <Route
-        path={paths.home}
-        element={
-          <Layout>
-            <HomePage />
-          </Layout>
-        }
-      />
-
-      <Route
-        path={paths.generateRecipeAI}
-        element={
-          <Layout>
-            <GenerateRecipe />
-          </Layout>
-        }
-      />
-      <Route
-        path={paths.findRecipe}
-        element={
-          <Layout>
-            <FindRecipe />
-          </Layout>
-        }
-      />
-      {/* Protected routes */}
-      <Route
-        path={paths.manageRecipe}
-        element={
-          <CheckAccess>
+    <AppRedirector>
+      <Routes>
+        <Route path={paths.login} element={<Login />} />
+        <Route path={paths.signUp} element={<SignUp />} />
+        <Route path={paths.forgotPassword} element={<ForgotPassword />} />
+        <Route
+          path={paths.home}
+          element={
             <Layout>
-              <ManageRecipe />
+              <HomePage />
             </Layout>
-          </CheckAccess>
-        }
-      />
-    </Routes>
+          }
+        />
+
+        <Route
+          path={paths.generateRecipeAI}
+          element={
+            <Layout>
+              <GenerateRecipe />
+            </Layout>
+          }
+        />
+        <Route
+          path={paths.findRecipe}
+          element={
+            <Layout>
+              <FindRecipe />
+            </Layout>
+          }
+        />
+        {/* Protected routes */}
+        <Route
+          path={paths.manageRecipe}
+          element={
+            <CheckAccess>
+              <Layout>
+                <ManageRecipe />
+              </Layout>
+            </CheckAccess>
+          }
+        />
+      </Routes>
+    </AppRedirector>
   );
 };
 
