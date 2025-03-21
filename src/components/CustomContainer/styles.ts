@@ -14,13 +14,13 @@ const MainContainer = styled.div`
 
   &.generate-page {
     margin: 5% 15%;
-    
+
     .form-control:focus {
-        color: ${colors.black};
-        background-color: #fff;
-        border-color: ${colors.deepOrange};
-        outline: ${colors.orange} solid 2px;
-        box-shadow: 0.5rem 0.5rem 0.25rem rgba(0, 0, 0, 0.075); }
+      color: ${colors.black};
+      background-color: #fff;
+      border-color: ${colors.deepOrange};
+      outline: ${colors.orange} solid 2px;
+      box-shadow: 0.5rem 0.5rem 0.25rem rgba(0, 0, 0, 0.075);
     }
 
     .card {

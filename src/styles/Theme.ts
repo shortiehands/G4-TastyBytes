@@ -135,6 +135,17 @@ const GlobalStyle = createGlobalStyle`
             --bs-pagination-font-size: 12px;
         }
     }
+
+    .table {
+        // --bs-table-border-color: ${colors.orange};
+        box-shadow: 0rem 0rem 0.625rem ${colors.lightBlack};
+        border-radius: 0.625rem;
+        overflow: hidden;
+    }
+
+    .table > :not(caption) > * > * {
+        border-bottom: 0.125rem solid ${colors.lightBlack};
+    }
 }
 `;
 

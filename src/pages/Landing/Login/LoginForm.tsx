@@ -246,7 +246,7 @@ const LoginForm: React.FC<any> = () => {
                 />
               </FormGroup>
               <FormGroup as={Col}>
-                <NavLinkStyled href={"/" + paths.resetPassword}>
+                <NavLinkStyled href={"/" + paths.forgotPassword}>
                   Forgot password?
                 </NavLinkStyled>
               </FormGroup>
@@ -282,11 +282,6 @@ const LoginForm: React.FC<any> = () => {
               {" Sign Up"}
             </a>
           </p>
-          {/* <ModalResult
-            show={openModal}
-            onHide={handleClose}
-            isSuccess={true} //hardcode for now
-          /> */}
         </AuthFormContent>
       </AuthForm>
     </AuthFormContainer>

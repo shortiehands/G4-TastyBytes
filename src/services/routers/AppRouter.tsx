@@ -8,21 +8,54 @@ import GenerateRecipe from "../../pages/GenerateRecipe";
 import Login from "../../pages/Landing/Login";
 import SignUp from "../../pages/Landing/SignUp";
 import FindRecipe from "../../pages/FindRecipe";
+import ManageRecipe from "../../pages/ManageRecipe";
+import ForgotPassword from "../../pages/Landing/ForgotPassword";
+import CheckAccess from "./CheckAccess";
 
 const AppRouter = () => {
   globalThis["a"] = useNavigate();
   return (
-    <AppRedirector>
-      <Layout>
-        <Routes>
-          <Route path={paths.home} element={<HomePage />} />
-          <Route path={paths.generateRecipeAI} element={<GenerateRecipe />} />
-          <Route path={paths.login} element={<Login />} />
-          <Route path={paths.signUp} element={<SignUp />} />
-          <Route path={paths.findRecipe} element={<FindRecipe />} />
-        </Routes>
-      </Layout>
-    </AppRedirector>
+    <Routes>
+      <Route path={paths.login} element={<Login />} />
+      <Route path={paths.signUp} element={<SignUp />} />
+      <Route path={paths.forgotPassword} element={<ForgotPassword />} />
+      <Route
+        path={paths.home}
+        element={
+          <Layout>
+            <HomePage />
+          </Layout>
+        }
+      />
+
+      <Route
+        path={paths.generateRecipeAI}
+        element={
+          <Layout>
+            <GenerateRecipe />
+          </Layout>
+        }
+      />
+      <Route
+        path={paths.findRecipe}
+        element={
+          <Layout>
+            <FindRecipe />
+          </Layout>
+        }
+      />
+      {/* Protected routes */}
+      <Route
+        path={paths.manageRecipe}
+        element={
+          <CheckAccess>
+            <Layout>
+              <ManageRecipe />
+            </Layout>
+          </CheckAccess>
+        }
+      />
+    </Routes>
   );
 };
 

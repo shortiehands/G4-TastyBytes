@@ -103,7 +103,8 @@ const SignUpForm: React.FC = () => {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/registration",  // Replace with backend URL
+      const response = await axios.post(
+        "http://127.0.0.1:8000/registration", // Replace with backend URL
         new URLSearchParams({ username, email, password }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
       );
@@ -112,13 +113,15 @@ const SignUpForm: React.FC = () => {
         setRegisteredUsername(username);
         setOpenOtp(true);
       }
-
     } catch (error) {
       setError("Error connecting to server");
       console.error("Registration error:", error);
 
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data.message || "Registration failed. Please try again.");
+        setError(
+          error.response.data.message ||
+            "Registration failed. Please try again."
+        );
       } else {
         setError("Error connecting to server");
       }
@@ -470,6 +473,24 @@ const SignUpForm: React.FC = () => {
             isSuccess={true}
             title="Thanks for signing up!"
           />
+          <p
+            className="sign-up text-center mt-4 mb-2"
+            style={{
+              fontSize: "11px",
+              font: "Poppins",
+            }}
+          >
+            Already have an account?
+            <a
+              href={"/" + paths.login}
+              style={{
+                fontSize: "11px",
+                font: "Poppins",
+              }}
+            >
+              {" login"}
+            </a>
+          </p>
         </AuthFormContent>
       </AuthForm>
     </AuthFormContainer>

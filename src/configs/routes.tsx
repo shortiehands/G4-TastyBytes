@@ -3,9 +3,11 @@ export const paths = {
   login: "login",
   signUp: "sign-up",
   resetPassword: "reset-password",
+  forgotPassword: "forgot-password",
   notFound: "not-found",
   generateRecipeAI: "generate-recipe-AI",
   findRecipe: "find-recipe",
+  manageRecipe: "manage-recipe",
 };
 
 export const allowSearchParamsPaths: string[] = [
