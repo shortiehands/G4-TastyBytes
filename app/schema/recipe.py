@@ -19,3 +19,9 @@ class RecipeInDB(RecipeBase):
 
     class Config:
         from_attributes = True 
+
+class LLMRecipeResponse(BaseModel):
+    recipe_name: str
+    overview: str
+    ingredients: list
+    steps: list
