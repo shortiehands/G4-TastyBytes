@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 _base_url = "https://api.groq.com/openai/v1"
-_model = "mixtral-8x7b-32768"
+_model = "llama3-70b-8192"
 _api_key = os.getenv("GROQ_API_KEY")
 
 client = openai.OpenAI(
@@ -62,7 +62,12 @@ def post_process(response_text: str):
     # Process extracted data
     recipe_name = recipe_name_match.group(1).strip() if recipe_name_match else "Unknown"
     overview = overview_match.group(1).strip() if overview_match else "No overview available"
-    ingredients = ingredients_match.group(1).strip().split("\n- ") if ingredients_match else []
+
+    # Clean and structure ingredients (preserve subsections like "For the cake:")
+    ingredients_raw = ingredients_match.group(1).strip() if ingredients_match else ""
+    ingredient_lines = re.split(r"\n(?=\*|For\s)", ingredients_raw)
+    ingredients = [line.strip() for line in ingredient_lines if line.strip()]
+    
     steps = steps_match.group(1).strip().split("\n") if steps_match else []
 
     return {
@@ -71,7 +76,6 @@ def post_process(response_text: str):
         "ingredients": ingredients,
         "steps": steps
     }
-
 
 def generate_recipe(text):
     messages = create_messages(text)

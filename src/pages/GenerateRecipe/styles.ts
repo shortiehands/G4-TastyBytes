@@ -20,10 +20,4 @@ const HeaderText = styled.p`
   }
 `;
 
-const ResponseDiv = styled(Card)`
-  border-radius: 0.625rem;
-  background: ${colors.orange};
-  border: none;
-`;
-
-export { HeaderText, ResponseDiv };
+export { HeaderText };

@@ -3,17 +3,14 @@ import {
   AuthForm,
   AuthFormContainer,
   AuthFormContent,
-  CheckLabel,
   FormTextStyled,
 } from "../styles";
 import {
-  Col,
   Form,
   FormControl,
   FormGroup,
   FormLabel,
   InputGroup,
-  Stack,
 } from "react-bootstrap";
 import {
   Eye,

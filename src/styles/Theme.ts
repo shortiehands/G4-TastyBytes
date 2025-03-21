@@ -87,6 +87,7 @@ const GlobalStyle = createGlobalStyle`
         @media screen and (max-width: 720px) {
             font-size: 13px;
         }
+    }
     
         @media (prefers-reduced-motion: reduce) {
             .form-control {
@@ -115,7 +116,6 @@ const GlobalStyle = createGlobalStyle`
         .form-control:focus + label {
             color: ${colors.deepOrange};
         }
-    }
     
     .pagination {
         --bs-pagination-padding-x: 0.75rem;

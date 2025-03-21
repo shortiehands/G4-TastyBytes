@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Card, Col, Container, Row } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Card, Row } from "react-bootstrap";
 import { recipeItem } from "./recipeList";
 import CustomPagination from "../../components/CustomPagination";
 import { CardStyled, ColStyled, TextStyled } from "./styles";
@@ -11,8 +10,6 @@ interface ShowRecipesProps {
 
 const ShowRecipes: React.FC<ShowRecipesProps> = ({ items }) => {
   const [pageItems, setPageItems] = useState<recipeItem[]>([]);
-
-  const navigate = useNavigate();
 
   const pageSize = 9;
 

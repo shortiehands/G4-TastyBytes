@@ -3,7 +3,7 @@ import TextField from "../../components/FormLayout/TextField";
 import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
 import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
-import { HeaderText, ResponseDiv } from "./styles";
+import { HeaderText } from "./styles";
 
 interface RecipeResponse {
   recipe_name: string;
@@ -117,7 +117,7 @@ const GenerateRecipe = () => {
                                   background: "transparent",
                                 }}
                               >
-                                <p>- {ingredient}</p>
+                                <p>{ingredient}</p>
                               </ListGroup.Item>
                             )
                           )}

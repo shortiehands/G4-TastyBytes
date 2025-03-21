@@ -17,7 +17,7 @@ import {
   NavLinkStyled,
 } from "../styles";
 import { Eye, EyeSlash, User, SecuritySafe, InfoCircle } from "iconsax-react";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { paths } from "../../../configs/routes";
 import CustomButton from "../../../components/CustomButton";
 import axios from "axios";

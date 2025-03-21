@@ -1,4 +1,4 @@
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import styled from "styled-components";
 import { colors } from "../../styles/Theme";
 
