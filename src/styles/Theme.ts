@@ -87,7 +87,7 @@ const GlobalStyle = createGlobalStyle`
         @media screen and (max-width: 720px) {
             font-size: 13px;
         }
-    }
+    
         @media (prefers-reduced-motion: reduce) {
             .form-control {
             transition: none; } }
@@ -115,6 +115,26 @@ const GlobalStyle = createGlobalStyle`
         .form-control:focus + label {
             color: ${colors.deepOrange};
         }
+    }
+    
+    .pagination {
+        --bs-pagination-padding-x: 0.75rem;
+        --bs-pagination-padding-y: 0.375rem;
+        --bs-pagination-font-size: 0.875rem;
+        --bs-pagination-bg: transparent;
+        --bs-pagination-border-color: ${colors.orange};
+        --bs-pagination-color: ${colors.black};
+        --bs-pagination-hover-bg: ${colors.orange};
+        --bs-pagination-hover-color: ${colors.white};
+        --bs-pagination-focus-color: ${colors.peach};
+        --bs-pagination-active-color: white;
+        --bs-pagination-active-bg: ${colors.deepOrange};
+        --bs-pagination-active-border-color: ${colors.orange};
+
+        @media screen and (max-width: 575px) {
+            --bs-pagination-font-size: 12px;
+        }
+    }
 }
 `;
 

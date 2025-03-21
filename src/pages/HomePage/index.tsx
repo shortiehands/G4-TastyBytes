@@ -24,10 +24,10 @@ const HomePage: React.FC = () => {
             borderRadius: "0",
           }}
           onClick={() => {
-            navigate("/" + paths.generateRecipeAI);
+            navigate("/" + paths.findRecipe);
           }}
         >
-          Generate Recipe
+          Find Recipe
         </Button>
       </Card.ImgOverlay>
     </CustomCard>

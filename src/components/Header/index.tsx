@@ -46,10 +46,17 @@ const Header: React.FC = () => {
           <Col>
             <DivControl>
               <HeaderText
+                style={{ paddingRight: "1rem" }}
+                onClick={() => navigate("/" + paths.findRecipe)}
+              >
+                Find Recipe
+              </HeaderText>
+              <HeaderText
                 onClick={() => navigate("/" + paths.generateRecipeAI)}
               >
                 AI Generate
               </HeaderText>
+
               <ProfileDropdown
                 title={
                   <SpanIcon>

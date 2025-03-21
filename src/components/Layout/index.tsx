@@ -16,11 +16,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <AppContainer>
       <Main>
-        {pathName === "/" + paths.home ||
-        pathName === "/" + paths.generateRecipeAI ? (
-          <Header />
-        ) : (
+        {pathName === "/" + paths.login || pathName === "/" + paths.signUp ? (
           <></>
+        ) : (
+          <Header />
         )}
         <AppBody>{children}</AppBody>
       </Main>

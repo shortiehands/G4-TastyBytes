@@ -105,15 +105,6 @@ const DivControl = styled.div`
   }
 `;
 
-const LogoStyled = styled(Logo)`
-  align-items: center;
-  // width: 95%;
-
-  // @media (max-width: 992px) {
-  //   width: 85%;
-  // }
-`;
-
 const ProfileDropdown = styled(NavDropdown)`
   // padding-left: 6px;
   color: ${colors.white};
@@ -130,7 +121,7 @@ const ProfileDropdown = styled(NavDropdown)`
 `;
 
 const HeaderText = styled.div`
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: ${colors.white};
   cursor: pointer;
 `;
@@ -140,7 +131,6 @@ export {
   NavContainer,
   SpanIcon,
   DivControl,
-  LogoStyled,
   ProfileDropdown,
   HeaderText
 };
