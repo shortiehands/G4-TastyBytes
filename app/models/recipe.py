@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from app.db.session import Base
 
 class Recipe(Base):
@@ -10,3 +11,5 @@ class Recipe(Base):
     ingredients = Column(String)
     steps = Column(String)
     username = Column(String, index=True)
+
+    reviews = relationship("Review", back_populates="recipe")
