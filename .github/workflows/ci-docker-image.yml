@@ -12,7 +12,7 @@ env:
   # change this to your Docker Hub username and repository
   # example: donta/book_app_backend
   #DOCKER_IMAGE: <Docker Hub username/<your_Docker_repository>
-  DOCKER_IMAGE: lowweijun/book_app_backend
+  DOCKER_IMAGE: lowweijun/tastybytes
     
 jobs:
   test:
@@ -67,7 +67,7 @@ jobs:
             # For branch pushes, just use latest
             echo "VERSION=latest" >> $GITHUB_OUTPUT
             echo "TAGS=${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_OUTPUT
-          fi
+      
       
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -82,3 +82,5 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.get_version.outputs.TAGS }}
+
+          # Test

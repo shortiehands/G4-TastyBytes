@@ -1,39 +1,23 @@
-# Use an official base image (e.g., Node.js for a JavaScript app or Python for a Python app)
-FROM node:16
-# Use an official Python base image
-FROM python:3.11-slim
+# Use the official Node.js image as the base image
+FROM node:20
 
-# Create a working directory inside the container
-WORKDIR /app
-
-# Copy your requirements file
-COPY requirements.txt /app/requirements.txt
-
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the rest of your application code
-COPY . /app
-
-# Expose port 8000 (FastAPI default)
-EXPOSE 8000
-
-# Start FastAPI with uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if applicable)
+# Copy package.json and package-lock.json to the container
 COPY package*.json ./
 
-# Install dependencies
+# Install Node.js dependencies
 RUN npm install
 
-# Copy the rest of the application code
+# Copy the rest of the application code to the container
 COPY . .
 
-# Expose the port your app runs on
-EXPOSE 3000
+# Build the project for production
+RUN npm run build
 
-# Define the command to run your application
-CMD ["npm", "start"]
+# Expose the port your app runs on (Webpack dev server default is 8080)
+EXPOSE 8080
+
+# Start the Webpack development server
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
