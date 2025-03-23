@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
 from fastapi.staticfiles import StaticFiles
 #from app.routes import books, ai, chroma, reviews
-from app.exceptions import ServiceException
+from app.exceptions import ServiceException, reviews
 from app.db.session import engine, Base
 from app.routes import recipe
 
@@ -74,7 +74,8 @@ app.include_router(recipe.router)
 # Uncomment this line to include the Auth router
 app.include_router(auth.router, prefix="", tags=["Auth"])
 
-#app.mount("/public", StaticFiles(directory="public"), name="public")
+#app.mount("/public", StaticFiles(directory="public"), name="public")app.include_router(reviews.router)
+
 # Serve static files (CSS, JS if needed)
 #app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
