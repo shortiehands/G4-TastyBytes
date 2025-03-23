@@ -3,7 +3,8 @@ import TextField from "../../components/FormLayout/TextField";
 import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
 import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
-import { HeaderText } from "./styles";
+import { ErrorTextStyled, HeaderText } from "./styles";
+import { InfoCircle } from "iconsax-react";
 
 interface RecipeResponse {
   recipe_name: string;
@@ -24,7 +25,7 @@ const GenerateRecipe = () => {
   // Call the FastAPI endpoint to generate a recipe from the prompt
   const generateRecipe = async (prompt: string): Promise<RecipeResponse> => {
     const response = await fetch(
-      "http://localhost:8000/recipes/generate_recipe/",
+      "http://localhost:8000/ai/generate_recipe/",
       {
         method: "POST",
         headers: {
@@ -47,6 +48,13 @@ const GenerateRecipe = () => {
     setLoading(true);
     setError("");
     setRecipeResponse(null);
+
+    if (!userInput) {
+      setError("Field is required");
+      setLoading(false);
+      setShow(false);
+      return;
+    }
 
     try {
       const data = await generateRecipe(userInput);
@@ -81,9 +89,18 @@ const GenerateRecipe = () => {
             {loading ? "Generating..." : "Generate"}
           </Button>
         </Form>
+        {error && (
+          <ErrorTextStyled>
+            <InfoCircle
+              size={14}
+              color="#e84242"
+              style={{ marginRight: "0.75rem" }}
+            />
+            Error: {error}
+          </ErrorTextStyled>
+        )}
         {show ? (
           <CustomContainer className="generate-response">
-            {error && <p style={{ color: "red" }}>Error: {error}</p>}
             {recipeResponse && (
               <>
                 <Row>
