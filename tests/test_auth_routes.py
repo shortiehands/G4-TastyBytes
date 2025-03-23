@@ -55,3 +55,18 @@ def test_registration_failure():
         assert response.status_code == 400
         assert response.json()["detail"] == "User already exists"
 
+
+
+def test_confirmation_success():
+    with patch('app.routes.auth.cognito_service.client.confirm_sign_up') as mock_confirm, \
+         patch('app.routes.auth.cognito_service.calculate_secret_hash') as mock_secret_hash:
+        
+        mock_secret_hash.return_value = "fake_hash"
+        mock_confirm.return_value = {}
+
+        response = client.post("/confirmation", data={"username": "testuser", "confirmation_code": "123456"})
+        assert response.status_code == 200
+        assert response.json()["message"] == "User confirmed successfully."
+        mock_confirm.assert_called_once()
+        mock_secret_hash.assert_called_once()
+
