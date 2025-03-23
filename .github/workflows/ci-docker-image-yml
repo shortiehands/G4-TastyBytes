@@ -5,10 +5,7 @@ on:
     branches: [ "main" ]
     tags:
       - 'v*..'
-  pull_request:
-    branches: [ "main" ]
-    types:
-      - closed  # Only trigger when the PR is closed (merged)
+
 
 env:
   # change this to your Docker Hub username and repository
@@ -37,7 +34,7 @@ jobs:
           python-version: "3.11"
           cache: "pip"
           
-      - name: Install dependencies
+      - name: Install dependencies 
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -51,10 +48,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Only proceed with the build if the PR is merged
-      - name: Check if PR was merged
-        if: github.event.pull_request.merged == true
-        run: echo "PR was merged, proceeding with the build."
 
       # Extract version (used for version tags in Docker)
       - name: Extract version
