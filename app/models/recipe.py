@@ -6,11 +6,10 @@ class Recipe(Base):
     __tablename__ = "recipes"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, nullable=False)
-    type = Column(String, nullable=False)
+    title = Column(String(255), nullable=False)  # ✅ Added length
+    type = Column(String(100), nullable=False)   # ✅ Added length
     ingredients = Column(Text, nullable=False)
     steps = Column(Text, nullable=False)
-    owner = Column(String, nullable=False)
+    owner = Column(String(100), nullable=False)  # ✅ Added length
 
-   
    
