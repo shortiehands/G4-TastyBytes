@@ -3,9 +3,6 @@ name: Python CI with Docker
 on:
   push:
     branches: [ "main" ]
-    tags:
-      - 'v*..'
-
 
 env:
   # change this to your Docker Hub username and repository
@@ -77,3 +74,8 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.get_version.outputs.TAGS }}
+
+      - name: Debug Trigger
+        run: |
+          echo "Workflow triggered on branch: ${{ github.ref }}"
+          
