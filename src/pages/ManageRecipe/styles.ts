@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { colors } from "../../styles/Theme";
 
 const DivStyled = styled.div`
   text-align: center;
@@ -11,4 +12,9 @@ const TextStyled = styled.p`
   font-size: 15px;
 `;
 
-export { DivStyled, TextStyled };
+const ErrorStyled = styled.p`
+  font-size: 0.688rem;
+  color: ${colors.red};
+`;
+
+export { DivStyled, TextStyled, ErrorStyled };

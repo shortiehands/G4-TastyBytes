@@ -12,8 +12,9 @@ import {
 } from "react-bootstrap";
 import { recipeItem } from "../FindRecipe/recipeList";
 import Title from "../../components/Title";
-import { DivStyled, TextStyled } from "./styles";
+import { DivStyled, ErrorStyled, TextStyled } from "./styles";
 import ModalResult from "../../components/ModalResult";
+import { InfoCircle } from "iconsax-react";
 
 // Update to your actual backend URL
 const BASE_URL = "http://localhost:8000";
@@ -86,6 +87,15 @@ const ManageRecipe = () => {
     } catch (err) {
       console.error("Error deleting recipe:", err);
       setError("Error deleting recipe");
+    }
+  };
+
+  const handleSubmitModal = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editId) {
+      setShowUpdateModal(true);
+    } else {
+      setShowSuccessModal(true);
     }
   };
 
@@ -209,11 +219,12 @@ const ManageRecipe = () => {
           </DivStyled>
         )}
 
-        <Form>
+        <Form onSubmit={handleSubmitModal}>
           <div>
             <FormGroup>
               <FormLabel>Title:</FormLabel>
               <FormControl
+                id="title"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -223,6 +234,7 @@ const ManageRecipe = () => {
             <FormGroup>
               <FormLabel>Type:</FormLabel>
               <FormControl
+                id="type"
                 type="text"
                 value={typeValue}
                 onChange={(e) => setTypeValue(e.target.value)}
@@ -232,6 +244,7 @@ const ManageRecipe = () => {
             <FormGroup>
               <FormLabel>Ingredients:</FormLabel>
               <FormControl
+                id="ingredients"
                 style={{ height: "100px" }}
                 as="textarea"
                 value={ingredients}
@@ -242,6 +255,7 @@ const ManageRecipe = () => {
             <FormGroup>
               <FormLabel>Steps:</FormLabel>
               <FormControl
+                id="steps"
                 style={{ height: "100px" }}
                 as="textarea"
                 value={steps}
@@ -251,16 +265,7 @@ const ManageRecipe = () => {
             </FormGroup>
           </div>
           <div>
-            <Button
-              style={{ marginRight: "1rem" }}
-              onClick={() => {
-                if (editId) {
-                  setShowUpdateModal(true);
-                } else {
-                  setShowSuccessModal(true);
-                }
-              }}
-            >
+            <Button style={{ marginRight: "1rem" }} type="submit">
               {editId ? "Update" : "Add"} Recipe
             </Button>
             <ModalResult
