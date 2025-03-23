@@ -70,3 +70,13 @@ def test_confirmation_success():
         mock_confirm.assert_called_once()
         mock_secret_hash.assert_called_once()
 
+def test_confirmation_failure():
+    with patch('app.routes.auth.cognito_service.client.confirm_sign_up', side_effect=ServiceException(400, "Invalid confirmation code")), \
+         patch('app.routes.auth.cognito_service.calculate_secret_hash') as mock_secret_hash:
+        
+        mock_secret_hash.return_value = "fake_hash"
+
+        response = client.post("/confirmation", data={"username": "testuser", "confirmation_code": "wrongcode"})
+        assert response.status_code == 400
+        assert response.json()["detail"] == "Invalid confirmation code"
+
