@@ -62,7 +62,7 @@ const SignUpForm: React.FC = () => {
     );
   };
 
-  const handleLogin = async (e: { preventDefault: () => void }) => {
+  const handleSignUp = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -119,7 +119,7 @@ const SignUpForm: React.FC = () => {
 
       if (axios.isAxiosError(error) && error.response) {
         setError(
-          error.response.data.message ||
+          error.response.data?.detail ||
             "Registration failed. Please try again."
         );
       } else {
@@ -270,7 +270,7 @@ const SignUpForm: React.FC = () => {
               >
                 Sign Up.
               </h5>
-              <Form onSubmit={handleLogin} style={{ paddingTop: "0.7rem" }}>
+              <Form onSubmit={handleSignUp} style={{ paddingTop: "0.7rem" }}>
                 <FormLabel
                   style={{
                     textAlign: "left",
@@ -453,15 +453,19 @@ const SignUpForm: React.FC = () => {
                     </FormTextStyled>
                   )}
                 </FormGroup>
+                {error && (
+                  <FormTextStyled className="required-field">
+                    <InfoCircle
+                      size={14}
+                      color="#e84242"
+                      style={{ marginRight: "0.75rem" }}
+                    />
+                    {error}
+                  </FormTextStyled>
+                )}
                 <CustomButton
                   title="SIGN UP"
                   disabled={loading}
-                  style={{
-                    width: "100%",
-                    fontSize: "11px",
-                    font: "Poppins",
-                    marginTop: "1rem",
-                  }}
                   type="submit"
                 />
               </Form>

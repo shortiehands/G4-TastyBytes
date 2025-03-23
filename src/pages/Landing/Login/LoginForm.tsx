@@ -254,12 +254,6 @@ const LoginForm: React.FC<any> = () => {
             <CustomButton
               title="LOGIN"
               disabled={loading}
-              style={{
-                width: "100%",
-                fontSize: "11px",
-                font: "Poppins",
-                marginTop: "1rem",
-              }}
               type="submit"
             />
           </Form>

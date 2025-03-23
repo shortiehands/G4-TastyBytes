@@ -29,7 +29,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
             ? {
                 paddingTop: "0.75rem",
                 paddingBottom: "0.75rem",
-                marginTop: "2rem",
+                marginTop: "1.5rem",
                 width: "100%",
               }
             : style

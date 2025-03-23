@@ -40,6 +40,25 @@ async def search_recipes(ingredients: str = Query(..., description="Comma-separa
         except httpx.RequestError as e:
             raise HTTPException(status_code=500, detail=f"Error fetching recipes: {str(e)}")
         
+@router.get("/search_user_recipes")
+def search_user_recipes(
+    ingredients: str = Query(..., description="Comma-separated list of ingredients"),
+    db: Session = Depends(get_db)
+):
+    """
+    Search recipes uploaded by users in our database using ingredient terms.
+    """
+    if not ingredients:
+        raise HTTPException(status_code=400, detail="No ingredients provided.")
+
+    terms = [term.strip().lower() for term in ingredients.split(",")]
+    
+    query = db.query(Recipe)
+    for term in terms:
+        query = query.filter(Recipe.ingredients.ilike(f"%{term}%"))
+    
+    return query.all()
+        
 @router.get("/", response_model=List[RecipeInDB])
 def read_recipes(
     username: str = Depends(get_username),

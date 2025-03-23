@@ -20,4 +20,12 @@ const ColStyled = styled(Col)`
   align-items: stretch;
 `;
 
-export { CardStyled, TextStyled, ColStyled };
+const UserRecipesDiv = styled.div`
+  background-color: #f7f2ea;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  border: 1px solid #e2d6c3;
+`;
+
+export { CardStyled, TextStyled, ColStyled, UserRecipesDiv };

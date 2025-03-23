@@ -12,9 +12,8 @@ import {
 } from "react-bootstrap";
 import { recipeItem } from "../FindRecipe/recipeList";
 import Title from "../../components/Title";
-import { DivStyled, ErrorStyled, TextStyled } from "./styles";
+import { DivStyled, TextStyled } from "./styles";
 import ModalResult from "../../components/ModalResult";
-import { InfoCircle } from "iconsax-react";
 
 // Update to your actual backend URL
 const BASE_URL = "http://localhost:8000";
