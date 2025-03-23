@@ -1,0 +1,57 @@
+import pytest
+from fastapi.testclient import TestClient
+from app.main import app  # adjust to your FastAPI entry point
+from app.routes import auth  # adjust based on your folder structure
+from app.exceptions import ServiceException
+from unittest.mock import patch
+
+client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def override_router():
+    # Ensure the auth router is included
+    app.include_router(auth.router)
+    yield
+
+
+def test_login_success():
+    with patch('app.routes.auth.cognito_service.authenticate_user') as mock_auth:
+        mock_auth.return_value = {
+            "id_token": "id_token",
+            "access_token": "access_token",
+            "refresh_token": "refresh_token"
+        }
+        response = client.post("/login", data={"username": "testuser", "password": "Password123"})
+        assert response.status_code == 200
+        assert response.json()["message"] == "Login successful"
+        assert "tokens" in response.json()
+        mock_auth.assert_called_once()
+
+
+def test_login_failure():
+    with patch('app.routes.auth.cognito_service.authenticate_user', side_effect=ServiceException(401, "Invalid creds")):
+        response = client.post("/login", data={"username": "testuser", "password": "wrongpass"})
+        assert response.status_code == 401
+        assert response.json()["detail"] == "Invalid creds"
+
+
+def test_registration_success():
+    with patch('app.routes.auth.cognito_service.register_user') as mock_register:
+        mock_register.return_value = {
+            "UserSub": "user-123",
+            "UserConfirmed": False
+        }
+        response = client.post("/registration", data={"username": "newuser", "email": "email@test.com", "password": "Password123"})
+        assert response.status_code == 201
+        assert response.json()["user_sub"] == "user-123"
+        assert response.json()["message"] == "User registration successful."
+        mock_register.assert_called_once()
+
+
+def test_registration_failure():
+    with patch('app.routes.auth.cognito_service.register_user', side_effect=ServiceException(400, "User already exists")):
+        response = client.post("/registration", data={"username": "newuser", "email": "email@test.com", "password": "Password123"})
+        assert response.status_code == 400
+        assert response.json()["detail"] == "User already exists"
+
