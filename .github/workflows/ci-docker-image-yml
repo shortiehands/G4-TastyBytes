@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     tags:
-      - 'v*..'
+      - "v*.*.*"
 
 
 env:
@@ -77,3 +77,8 @@ jobs:
           context: .
           push: true
           tags: ${{ steps.get_version.outputs.TAGS }}
+
+      - name: Debug Trigger
+        run: |
+          echo "Workflow triggered on branch: ${{ github.ref }}"
+          
