@@ -3,9 +3,6 @@ name: Python CI with Docker
 on:
   push:
     branches: [ "main" ]
-    tags:
-      - "v*.*.*"
-
 
 env:
   # change this to your Docker Hub username and repository
