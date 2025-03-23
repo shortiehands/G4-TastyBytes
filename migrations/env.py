@@ -5,11 +5,18 @@ from sqlalchemy import pool
 from app.db.session import Base
 from app.models.recipe import Recipe
 from alembic import context
+import os
+from dotenv import load_dotenv
 
-# this is the Alembic Config object, which provides
-# access to the values within the .ini file in use.
+load_dotenv()
+
+DATABASE_URL = f"mysql+pymysql://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}/{os.getenv('DATABASE_NAME')}"
+
 config = context.config
 fileConfig(config.config_file_name)
+
+# Override the sqlalchemy.url from alembic.ini
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
    # Set the target metadata to Base.metadata
 target_metadata = Base.metadata
