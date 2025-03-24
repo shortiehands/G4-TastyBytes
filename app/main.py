@@ -1,10 +1,10 @@
-
 import logging
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
 from fastapi.staticfiles import StaticFiles
 #from app.routes import books, ai, chroma, reviews
+from app.routes import reviews
 from app.exceptions import ServiceException
 from app.db.session import engine, Base
 from app.routes import llm, recipe
@@ -70,5 +70,6 @@ async def global_exception_handler(request: Request, exc: Exception):
 app.include_router(auth.router, prefix="", tags=["Auth"])
 app.include_router(recipe.router)
 app.include_router(llm.router)
+app.include_router(reviews.router, prefix="", tags=["Reviews"])
 
 
