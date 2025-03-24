@@ -2,9 +2,10 @@ import pytest
 import os
 from app.services.llm_service import post_process, generate_recipe
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
-if not openai_api_key:
-    raise ValueError("OpenAI API key not found. Ensure it is set in the .env file.")
+def test_get_openai_client():
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    if not openai_api_key:
+        raise ValueError("OpenAI API key not found. Ensure it is set in the .env file.")
 
 @pytest.fixture
 def mock_llm_response():

@@ -89,7 +89,7 @@ def generate_recipe(text):
     # return get_completion_for_messages(messages)
 
 # Example usage
-if __name__ == "__main__":
-    prompt_text = "A gluten-free, dairy-free chocolate cake with no refined sugar"
-    result = generate_recipe(prompt_text)
-    print(result)
+# if __name__ == "__main__":
+#     prompt_text = "A gluten-free, dairy-free chocolate cake with no refined sugar"
+#     result = generate_recipe(prompt_text)
+#     print(result)

@@ -1,9 +1,11 @@
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from app.models.recipe import Recipe, Base
 from app.services.recipe_service import (
-    get_recipes, get_recipe, create_recipe, update_recipe, delete_recipe
+    get_recipes, get_recipe, create_recipe, update_recipe, delete_recipe, get_user_uploaded_recipes
 )
 from app.schema.recipe import RecipeCreate
 
@@ -74,3 +76,47 @@ def test_delete_recipe(db_session, sample_recipe):
     created_recipe = create_recipe(db_session, sample_recipe, username)
     assert delete_recipe(db_session, created_recipe.id) is True
     assert get_recipe(db_session, created_recipe.id, username) is None
+
+def test_search_user_recipes(db_session):
+    """Test searching user recipes by ingredient keywords."""
+
+    # Add recipes using existing service method
+    recipes = [
+        RecipeCreate(
+            title="Spaghetti Carbonara",
+            type="Italian",
+            ingredients="Spaghetti, eggs, pancetta, parmesan, black pepper",
+            steps="Boil pasta, cook pancetta, mix with eggs and cheese"
+        ),
+        RecipeCreate(
+            title="Tomato Basil Pasta",
+            type="Italian",
+            ingredients="Pasta, tomato, basil, olive oil, garlic",
+            steps="Cook pasta, make sauce with tomato and basil"
+        ),
+        RecipeCreate(
+            title="Chicken Stir Fry",
+            type="Asian",
+            ingredients="Chicken, bell pepper, soy sauce, garlic, onion",
+            steps="Stir fry chicken and vegetables in soy sauce"
+        )
+    ]
+
+    for recipe in recipes:
+        create_recipe(db_session, recipe, "test_user")
+    db_session.commit()
+
+    # Test: single ingredient
+    results = get_user_uploaded_recipes(db_session, "garlic")
+    assert len(results) == 2
+    assert any("Tomato Basil Pasta" in r.title for r in results)
+    assert any("Chicken Stir Fry" in r.title for r in results)
+
+    # Test: multiple ingredients
+    results = get_user_uploaded_recipes(db_session, "pancetta,parmesan")
+    assert len(results) == 1
+    assert results[0].title == "Spaghetti Carbonara"
+
+    # Test: no matches
+    results = get_user_uploaded_recipes(db_session, "chocolate")
+    assert results == []
