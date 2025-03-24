@@ -1,20 +1,46 @@
-# Use an official Python base image
-FROM python:3.11-slim
+# Stage 1: Build the React app
+FROM node:18-alpine AS react-build
 
-# Create a working directory inside the container
-WORKDIR /g4-tastybytes
+WORKDIR /g4-tastybytes-frontend
 
-# Copy your requirements file
-COPY requirements.txt /g4-tastybytes/requirements.txt
+# Copy the frontend package files
+COPY frontend/package.json frontend/package-lock.json ./
 
 # Install dependencies
+RUN npm install --frozen-lockfile
+
+# Copy all frontend files and build the React app
+COPY frontend /g4-tastybytes-frontend
+RUN npm run build
+
+# Stage 2: Set up FastAPI backend
+FROM python:3.11-slim AS fastapi-build
+
+WORKDIR /g4-tastybytes-backend
+
+# Copy the backend requirements
+COPY requirements.txt /g4-tastybytes-backend/
+
+# Install backend dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your application code
-COPY . /g4-tastybytes
+# Copy the FastAPI app code
+COPY app /g4-tastybytes-backend/
 
-# Expose port 8000 (FastAPI default)
+# Stage 3: Final image combining FastAPI and React
+FROM nginx:alpine
+
+# Copy the built React files from the react-build stage
+COPY --from=react-build /g4-tastybytes-frontend/build /usr/share/nginx/html
+
+# Copy the FastAPI app files (if required for runtime)
+COPY --from=fastapi-build /g4-tastybytes-backend /g4-tastybytes-backend
+
+# Expose necessary ports
+# For React (served by Nginx)
+EXPOSE 80
+# For FastAPI
 EXPOSE 8000
 
-# Start FastAPI with uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run both FastAPI and Nginx to serve the frontend
+CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port 8000 & nginx -g 'daemon off;'"]
