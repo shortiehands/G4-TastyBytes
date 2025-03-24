@@ -19,28 +19,23 @@ const AppRedirector: React.FC<AppRedirectorProps> = ({ children }) => {
   const search = location.search;
   const origin = window.location.origin;
 
-  const searchParams =
-    !!search && allowSearchParams(getRelativePath(pathName)) ? search : "";
-
   // In our case pathName starts with "/" not baseRouterPath
   if (!pathName.startsWith("/")) {
     const path = ((path) => (path === "" ? paths.home : path))(
       pathName.replace("/", "").trim()
     );
 
-    window.location.href = `${origin}${baseRouterPath}/${path}${searchParams}`;
+    window.location.href = `${origin}${baseRouterPath}`;
   } else {
     const relativePath = getRelativePath(pathName);
 
     // in our case relativePath === ""
     if (relativePath === `${baseRouterPath}` || relativePath === "") {
-      return navigate(paths.login);
+      return navigate(paths.home);
     }
 
     if (!isValidPath(relativePath)) {
       return navigate(paths.notFound);
-    } else if (search && !searchParams) {
-      window.location.href = `${origin}${baseRouterPath}/${relativePath}`;
     } else {
       return <>{children}</>;
     }

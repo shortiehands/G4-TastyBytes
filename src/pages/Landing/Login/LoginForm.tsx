@@ -17,7 +17,7 @@ import {
   NavLinkStyled,
 } from "../styles";
 import { Eye, EyeSlash, User, SecuritySafe, InfoCircle } from "iconsax-react";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { paths } from "../../../configs/routes";
 import CustomButton from "../../../components/CustomButton";
 import axios from "axios";
@@ -246,7 +246,7 @@ const LoginForm: React.FC<any> = () => {
                 />
               </FormGroup>
               <FormGroup as={Col}>
-                <NavLinkStyled href={"/" + paths.resetPassword}>
+                <NavLinkStyled href={"/" + paths.forgotPassword}>
                   Forgot password?
                 </NavLinkStyled>
               </FormGroup>
@@ -254,12 +254,6 @@ const LoginForm: React.FC<any> = () => {
             <CustomButton
               title="LOGIN"
               disabled={loading}
-              style={{
-                width: "100%",
-                fontSize: "11px",
-                font: "Poppins",
-                marginTop: "1rem",
-              }}
               type="submit"
             />
           </Form>
@@ -282,11 +276,6 @@ const LoginForm: React.FC<any> = () => {
               {" Sign Up"}
             </a>
           </p>
-          {/* <ModalResult
-            show={openModal}
-            onHide={handleClose}
-            isSuccess={true} //hardcode for now
-          /> */}
         </AuthFormContent>
       </AuthForm>
     </AuthFormContainer>

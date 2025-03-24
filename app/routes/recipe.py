@@ -1,5 +1,5 @@
 # app/routes/recipe.py
-from fastapi import APIRouter, Body, Depends, Query,HTTPException, status
+from fastapi import APIRouter, Depends, Query,HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 import httpx
@@ -8,8 +8,7 @@ import os
 from app.dependencies.get_username import get_username
 from app.db.session import get_db  # This is the dependency that provides a DB session
 from app.models.recipe import Recipe
-from app.schema.recipe import LLMRecipeResponse, RecipeCreate, RecipeUpdate, RecipeInDB
-from app.services.llm_service import generate_recipe
+from app.schema.recipe import RecipeCreate, RecipeUpdate, RecipeInDB
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 
@@ -40,6 +39,25 @@ async def search_recipes(ingredients: str = Query(..., description="Comma-separa
             return response.json()
         except httpx.RequestError as e:
             raise HTTPException(status_code=500, detail=f"Error fetching recipes: {str(e)}")
+        
+@router.get("/search_user_recipes")
+def search_user_recipes(
+    ingredients: str = Query(..., description="Comma-separated list of ingredients"),
+    db: Session = Depends(get_db)
+):
+    """
+    Search recipes uploaded by users in our database using ingredient terms.
+    """
+    if not ingredients:
+        raise HTTPException(status_code=400, detail="No ingredients provided.")
+
+    terms = [term.strip().lower() for term in ingredients.split(",")]
+    
+    query = db.query(Recipe)
+    for term in terms:
+        query = query.filter(Recipe.ingredients.ilike(f"%{term}%"))
+    
+    return query.all()
         
 @router.get("/", response_model=List[RecipeInDB])
 def read_recipes(
@@ -134,18 +152,3 @@ def delete_recipe(
     db.delete(recipe)
     db.commit()
     return {"detail": "Recipe deleted"}
-
-    
-@router.post("/generate_recipe", summary="Generate Recipe LLM", response_model=LLMRecipeResponse)
-def generate_llm_recipe(data: dict = Body(...)):
-    """
-    Generate a recipe based on the provided prompt using an LLM.
-    """
-    prompt = data.get("prompt")
-    if not prompt:
-        raise HTTPException(status_code=400, detail="Prompt is required.")
-    try:
-        recipe = generate_recipe(prompt)
-        return recipe
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))

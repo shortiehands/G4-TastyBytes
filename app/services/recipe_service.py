@@ -8,7 +8,6 @@ def get_recipes(db: Session, username: str):
 def get_recipe(db: Session, recipe_id: int, username: str):
     return db.query(Recipe).filter(Recipe.id == recipe_id, Recipe.username == username).first()
 
-
 def create_recipe(db: Session, recipe: RecipeCreate,username: str):
     new_recipe = Recipe(title=recipe.title, description=recipe.description, ingredients=recipe.ingredients, steps=recipe.steps, username=username)
     db.add(new_recipe)
@@ -24,8 +23,6 @@ def delete_recipe(db: Session, recipe_id: int):
         return True
     return False
 
-
-
 def update_recipe(db: Session, recipe_id: int, title: str, description: str, ingredients: str, steps: str):
     recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
     if recipe:
@@ -37,3 +34,15 @@ def update_recipe(db: Session, recipe_id: int, title: str, description: str, ing
         db.refresh(recipe)  # Ensures the returned recipe has updated values
 
     return {"message": "Recipe updated successfully!", "recipe": recipe}
+
+def get_user_uploaded_recipes(db: Session, ingredients: str):
+    """
+    Search for recipes from the internal DB that include any of the given ingredients.
+    """
+    terms = [term.strip().lower() for term in ingredients.split(",")]
+    
+    query = db.query(Recipe)
+    for term in terms:
+        query = query.filter(Recipe.ingredients.ilike(f"%{term}%"))
+    
+    return query.all()

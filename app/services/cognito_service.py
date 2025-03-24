@@ -157,7 +157,7 @@ class CognitoService:
             return response
 
         except self.client.exceptions.UsernameExistsException:
-            raise ServiceException(status_code=400, detail="User already exists.")
+            raise ServiceException(status_code=400, detail="Username already exists.")
         except Exception as e:
             raise ServiceException(status_code=500, detail=f"Registration failed: {str(e)}")
     

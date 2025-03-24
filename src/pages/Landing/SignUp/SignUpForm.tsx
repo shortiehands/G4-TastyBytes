@@ -3,17 +3,14 @@ import {
   AuthForm,
   AuthFormContainer,
   AuthFormContent,
-  CheckLabel,
   FormTextStyled,
 } from "../styles";
 import {
-  Col,
   Form,
   FormControl,
   FormGroup,
   FormLabel,
   InputGroup,
-  Stack,
 } from "react-bootstrap";
 import {
   Eye,
@@ -65,7 +62,7 @@ const SignUpForm: React.FC = () => {
     );
   };
 
-  const handleLogin = async (e: { preventDefault: () => void }) => {
+  const handleSignUp = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -106,7 +103,8 @@ const SignUpForm: React.FC = () => {
     }
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/registration",  // Replace with backend URL
+      const response = await axios.post(
+        "http://127.0.0.1:8000/registration", // Replace with backend URL
         new URLSearchParams({ username, email, password }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
       );
@@ -115,13 +113,15 @@ const SignUpForm: React.FC = () => {
         setRegisteredUsername(username);
         setOpenOtp(true);
       }
-
     } catch (error) {
       setError("Error connecting to server");
       console.error("Registration error:", error);
 
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data.message || "Registration failed. Please try again.");
+        setError(
+          error.response.data?.detail ||
+            "Registration failed. Please try again."
+        );
       } else {
         setError("Error connecting to server");
       }
@@ -270,7 +270,7 @@ const SignUpForm: React.FC = () => {
               >
                 Sign Up.
               </h5>
-              <Form onSubmit={handleLogin} style={{ paddingTop: "0.7rem" }}>
+              <Form onSubmit={handleSignUp} style={{ paddingTop: "0.7rem" }}>
                 <FormLabel
                   style={{
                     textAlign: "left",
@@ -453,15 +453,19 @@ const SignUpForm: React.FC = () => {
                     </FormTextStyled>
                   )}
                 </FormGroup>
+                {error && (
+                  <FormTextStyled className="required-field">
+                    <InfoCircle
+                      size={14}
+                      color="#e84242"
+                      style={{ marginRight: "0.75rem" }}
+                    />
+                    {error}
+                  </FormTextStyled>
+                )}
                 <CustomButton
                   title="SIGN UP"
                   disabled={loading}
-                  style={{
-                    width: "100%",
-                    fontSize: "11px",
-                    font: "Poppins",
-                    marginTop: "1rem",
-                  }}
                   type="submit"
                 />
               </Form>
@@ -473,6 +477,24 @@ const SignUpForm: React.FC = () => {
             isSuccess={true}
             title="Thanks for signing up!"
           />
+          <p
+            className="sign-up text-center mt-4 mb-2"
+            style={{
+              fontSize: "11px",
+              font: "Poppins",
+            }}
+          >
+            Already have an account?
+            <a
+              href={"/" + paths.login}
+              style={{
+                fontSize: "11px",
+                font: "Poppins",
+              }}
+            >
+              {" login"}
+            </a>
+          </p>
         </AuthFormContent>
       </AuthForm>
     </AuthFormContainer>

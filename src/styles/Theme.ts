@@ -87,6 +87,7 @@ const GlobalStyle = createGlobalStyle`
         @media screen and (max-width: 720px) {
             font-size: 13px;
         }
+    }
     
         @media (prefers-reduced-motion: reduce) {
             .form-control {
@@ -115,7 +116,6 @@ const GlobalStyle = createGlobalStyle`
         .form-control:focus + label {
             color: ${colors.deepOrange};
         }
-    }
     
     .pagination {
         --bs-pagination-padding-x: 0.75rem;
@@ -134,6 +134,17 @@ const GlobalStyle = createGlobalStyle`
         @media screen and (max-width: 575px) {
             --bs-pagination-font-size: 12px;
         }
+    }
+
+    .table {
+        // --bs-table-border-color: ${colors.orange};
+        box-shadow: 0rem 0rem 0.625rem ${colors.lightBlack};
+        border-radius: 0.625rem;
+        overflow: hidden;
+    }
+
+    .table > :not(caption) > * > * {
+        border-bottom: 0.125rem solid ${colors.lightBlack};
     }
 }
 `;

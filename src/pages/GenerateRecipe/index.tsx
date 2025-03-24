@@ -3,7 +3,8 @@ import TextField from "../../components/FormLayout/TextField";
 import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
 import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
-import { HeaderText, ResponseDiv } from "./styles";
+import { ErrorTextStyled, HeaderText } from "./styles";
+import { InfoCircle } from "iconsax-react";
 
 interface RecipeResponse {
   recipe_name: string;
@@ -23,16 +24,13 @@ const GenerateRecipe = () => {
 
   // Call the FastAPI endpoint to generate a recipe from the prompt
   const generateRecipe = async (prompt: string): Promise<RecipeResponse> => {
-    const response = await fetch(
-      "http://localhost:8000/recipes/generate_recipe/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
-      }
-    );
+    const response = await fetch("http://localhost:8000/ai/generate_recipe/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
 
     if (!response.ok) {
       throw new Error("Failed to generate recipe");
@@ -47,6 +45,13 @@ const GenerateRecipe = () => {
     setLoading(true);
     setError("");
     setRecipeResponse(null);
+
+    if (!userInput) {
+      setError("Please enter a dish description.");
+      setLoading(false);
+      setShow(false);
+      return;
+    }
 
     try {
       const data = await generateRecipe(userInput);
@@ -81,9 +86,9 @@ const GenerateRecipe = () => {
             {loading ? "Generating..." : "Generate"}
           </Button>
         </Form>
+        {error && <p style={{ paddingTop: "1rem", color: "red" }}>{error}</p>}
         {show ? (
           <CustomContainer className="generate-response">
-            {error && <p style={{ color: "red" }}>Error: {error}</p>}
             {recipeResponse && (
               <>
                 <Row>
@@ -117,7 +122,7 @@ const GenerateRecipe = () => {
                                   background: "transparent",
                                 }}
                               >
-                                <p>- {ingredient}</p>
+                                <p>{ingredient}</p>
                               </ListGroup.Item>
                             )
                           )}

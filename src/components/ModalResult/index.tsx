@@ -3,15 +3,6 @@ import CustomModal from "../CustomModal";
 import { SuccessIcon, FailIcon } from "../Images";
 import { ContextContainer, ButtonContainer } from "./styles";
 import CustomButton from "../CustomButton";
-import TextField from "../FormLayout/TextField";
-import {
-  Form,
-  FormControl,
-  FormGroup,
-  FormLabel,
-  InputGroup,
-} from "react-bootstrap";
-import { Sms } from "iconsax-react";
 
 interface ModalProps {
   show: boolean;
@@ -94,19 +85,19 @@ const ModalResult: React.FC<ModalProps> = ({
           ) : (
             <ButtonContainer>
               <CustomButton
+                style={{ width: "9.125rem", height: "3.125rem" }}
+                title="Yes"
+                onClick={onProceed}
+              />
+              <CustomButton
                 style={{
                   background: "white",
-                  color: "#134da3",
+                  color: "black",
                   width: "9.125rem",
                   height: "3.125rem",
                 }}
                 title="Cancel"
                 onClick={handleClose}
-              />
-              <CustomButton
-                style={{ width: "9.125rem", height: "3.125rem" }}
-                title="Yes"
-                onClick={onProceed}
               />
             </ButtonContainer>
           )}

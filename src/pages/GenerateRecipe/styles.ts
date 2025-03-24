@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { colors } from "../../styles/Theme";
-import { Card } from "react-bootstrap";
 
 const HeaderText = styled.p`
   text-align: center;
@@ -20,10 +19,9 @@ const HeaderText = styled.p`
   }
 `;
 
-const ResponseDiv = styled(Card)`
-  border-radius: 0.625rem;
-  background: ${colors.orange};
-  border: none;
+const ErrorTextStyled = styled.p`
+  padding-top: 1rem;
+  color: ${colors.red};
 `;
 
-export { HeaderText, ResponseDiv };
+export { HeaderText, ErrorTextStyled };

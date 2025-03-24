@@ -1,11 +1,8 @@
 import React, {
-  SetStateAction,
   useEffect,
   useState,
-  Dispatch,
-  useContext,
 } from "react";
-import { Navbar, Nav, Col, NavDropdown } from "react-bootstrap";
+import { Navbar, Col, NavDropdown } from "react-bootstrap";
 import {
   DivControl,
   HeaderMain,
@@ -21,19 +18,32 @@ import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
-  const [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleWindowResize = () => {
-      setWindowSize(window.innerWidth);
+    const checkAuth = () => {
+      const token = localStorage.getItem("token");
+      setIsAuthenticated(!!token);
     };
 
-    window.addEventListener("resize", handleWindowResize);
+    checkAuth();
+
+    // Listen for changes to localStorage (e.g., login/logout from other tabs)
+    window.addEventListener("storage", checkAuth);
 
     return () => {
-      window.removeEventListener("resize", handleWindowResize);
+      window.removeEventListener("storage", checkAuth);
     };
-  });
+  }, []);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    sessionStorage.clear();
+    setIsAuthenticated(false);
+    navigate("/" + paths.home);
+  };
+
   return (
     <>
       <HeaderMain>
@@ -52,11 +62,14 @@ const Header: React.FC = () => {
                 Find Recipe
               </HeaderText>
               <HeaderText
+                style={{ paddingRight: "1rem" }}
                 onClick={() => navigate("/" + paths.generateRecipeAI)}
               >
                 AI Generate
               </HeaderText>
-
+              <HeaderText onClick={() => navigate("/" + paths.manageRecipe)}>
+                Manage Recipe
+              </HeaderText>
               <ProfileDropdown
                 title={
                   <SpanIcon>
@@ -64,17 +77,19 @@ const Header: React.FC = () => {
                   </SpanIcon>
                 }
               >
-                <NavDropdown.Item
-                  onClick={() => {
-                    // Clear authentication-related data
-                    localStorage.removeItem("token"); // Remove the token from localStorage
-                    localStorage.removeItem("username"); // Remove the username if stored
-                    sessionStorage.clear(); // Clear sessionStorage if used
-                    navigate("/" + paths.login);
-                  }}
-                >
-                  Sign Out
-                </NavDropdown.Item>
+                {isAuthenticated ? (
+                  <NavDropdown.Item onClick={handleSignOut}>
+                    Sign Out
+                  </NavDropdown.Item>
+                ) : (
+                  <NavDropdown.Item
+                    onClick={() => {
+                      navigate("/" + paths.login);
+                    }}
+                  >
+                    Sign In
+                  </NavDropdown.Item>
+                )}
               </ProfileDropdown>
             </DivControl>
           </Col>

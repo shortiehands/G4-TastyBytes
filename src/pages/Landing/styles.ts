@@ -125,6 +125,7 @@ const NavDropdownStyled = styled(NavDropdown)`
 const FormTextStyled = styled(Form.Text)`
   font-size: 0.688rem;
   color: ${colors.slateGrey};
+  padding-bottom: 0.25rem;
 
   &.required-field {
     color: ${colors.red};
