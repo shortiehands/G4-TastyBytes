@@ -24,7 +24,7 @@ def test_user_cannot_update_other_users_recipe():
     # Mock recipe owned by user_1
     db.query().filter().first.return_value = None  # Simulate no access to the recipe
 
-    response = update_recipe(db, recipe_id=1, title="New Title", type="Updated", ingredients="New", steps="New")
+    response = update_recipe(db, recipe_id=1, title="New Title", description="Updated", ingredients="New", steps="New")
     
     assert response == {"message": "Recipe updated successfully!", "recipe": None}, "User should not be able to update another user's recipe."
 

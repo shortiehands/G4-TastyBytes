@@ -10,6 +10,6 @@ class Recipe(Base):
     description = Column(String)
     ingredients = Column(String)
     steps = Column(String)
-    username = Column(String, index=True)
+    owner = Column(String, index=True)
 
     reviews = relationship("Review", back_populates="recipe")

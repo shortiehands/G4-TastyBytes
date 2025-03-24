@@ -4,10 +4,10 @@ from app.models.review import ReviewResponse
 
 class RecipeBase(BaseModel):
     title: str
-    type: str
+    description: str
     ingredients: str
     steps: str
-    username: str
+    owner: str
 
 class RecipeCreate(RecipeBase):
     pass
