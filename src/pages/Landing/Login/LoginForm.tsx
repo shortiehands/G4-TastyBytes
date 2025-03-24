@@ -245,11 +245,11 @@ const LoginForm: React.FC<any> = () => {
                   }}
                 />
               </FormGroup>
-              <FormGroup as={Col}>
+              {/* <FormGroup as={Col}>
                 <NavLinkStyled href={"/" + paths.forgotPassword}>
                   Forgot password?
                 </NavLinkStyled>
-              </FormGroup>
+              </FormGroup> */}
             </Stack>
             <CustomButton
               title="LOGIN"

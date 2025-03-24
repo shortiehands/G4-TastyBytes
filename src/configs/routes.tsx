@@ -8,6 +8,7 @@ export const paths = {
   generateRecipeAI: "generate-recipe-AI",
   findRecipe: "find-recipe",
   manageRecipe: "manage-recipe",
+  profile: "profile",
 };
 
 export const allowSearchParamsPaths: string[] = [

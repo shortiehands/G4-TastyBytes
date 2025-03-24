@@ -11,6 +11,7 @@ import FindRecipe from "../../pages/FindRecipe";
 import ManageRecipe from "../../pages/ManageRecipe";
 import ForgotPassword from "../../pages/Landing/ForgotPassword";
 import CheckAccess from "./CheckAccess";
+import Profile from "../../pages/Profile";
 
 const AppRouter = () => {
   globalThis["a"] = useNavigate();
@@ -19,7 +20,7 @@ const AppRouter = () => {
       <Routes>
         <Route path={paths.login} element={<Login />} />
         <Route path={paths.signUp} element={<SignUp />} />
-        <Route path={paths.forgotPassword} element={<ForgotPassword />} />
+        {/* <Route path={paths.forgotPassword} element={<ForgotPassword />} /> */}
         <Route
           path={paths.home}
           element={
@@ -28,7 +29,6 @@ const AppRouter = () => {
             </Layout>
           }
         />
-
         <Route
           path={paths.generateRecipeAI}
           element={
@@ -52,6 +52,16 @@ const AppRouter = () => {
             <CheckAccess>
               <Layout>
                 <ManageRecipe />
+              </Layout>
+            </CheckAccess>
+          }
+        />
+        <Route
+          path={paths.profile}
+          element={
+            <CheckAccess>
+              <Layout>
+                <Profile />
               </Layout>
             </CheckAccess>
           }

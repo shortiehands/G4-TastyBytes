@@ -151,7 +151,7 @@ const ManageRecipe = () => {
   return (
     <div>
       <CustomContainer className="generate-page">
-        <Title title="Manage Your Recipe" className="center" />
+        <Title title="Manage My Recipe" className="center" />
         {recipes.length > 0 ? (
           <Table bordered hover>
             <thead>

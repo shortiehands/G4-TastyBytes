@@ -1,7 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Col, NavDropdown } from "react-bootstrap";
 import {
   DivControl,
@@ -78,9 +75,14 @@ const Header: React.FC = () => {
                 }
               >
                 {isAuthenticated ? (
-                  <NavDropdown.Item onClick={handleSignOut}>
-                    Sign Out
-                  </NavDropdown.Item>
+                  <>
+                    <NavDropdown.Item onClick={() => navigate("/" + paths.profile)}>
+                      My Profile
+                    </NavDropdown.Item>
+                    <NavDropdown.Item onClick={handleSignOut}>
+                      Sign Out
+                    </NavDropdown.Item>
+                  </>
                 ) : (
                   <NavDropdown.Item
                     onClick={() => {
