@@ -17,13 +17,13 @@ RUN npm run build && ls -l /g4-tastybytes/build
 FROM python:3.11-slim AS fastapi-build
 
 # Copy the backend requirements
-COPY requirements.txt /g4-tastybytes/
+COPY requirements.txt /g4-tastybytes/requirements.txt
 
 # Install backend dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the FastAPI app code
-COPY app /g4-tastybytes/
+COPY . /g4-tastybytes/
 
 # Stage 3: Final image combining FastAPI and React
 FROM nginx:alpine
