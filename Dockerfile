@@ -4,13 +4,13 @@ FROM node:18-alpine AS react-build
 WORKDIR /g4-tastybytes-frontend
 
 # Copy the frontend package files
-COPY frontend/package.json frontend/package-lock.json ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN npm install --frozen-lockfile
 
 # Copy all frontend files and build the React app
-COPY frontend /g4-tastybytes-frontend
+COPY src /g4-tastybytes-frontend/
 RUN npm run build
 
 # Stage 2: Set up FastAPI backend
