@@ -127,7 +127,7 @@ const FindRecipe = () => {
                     >
                       Type: {recipe.type || "N/A"}
                     </p>
-                    <div style={{ marginBottom: "0.5rem" }}>
+                    <div style={{ marginBottom: "1rem" }}>
                       <strong>Ingredients:</strong>
                       <div style={{ marginTop: "0.5rem" }}>
                         {recipe.ingredients
@@ -143,7 +143,7 @@ const FindRecipe = () => {
                     </div>
                     <div>
                       <strong>Steps:</strong>
-                      <div style={{ marginTop: "0.75rem" }}>
+                      <div style={{ marginTop: "0.5rem" }}>
                         {recipe.steps
                           .split("\n")
                           .map((step) => step.trim())

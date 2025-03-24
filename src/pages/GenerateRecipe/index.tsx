@@ -24,16 +24,13 @@ const GenerateRecipe = () => {
 
   // Call the FastAPI endpoint to generate a recipe from the prompt
   const generateRecipe = async (prompt: string): Promise<RecipeResponse> => {
-    const response = await fetch(
-      "http://localhost:8000/ai/generate_recipe/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt }),
-      }
-    );
+    const response = await fetch("http://localhost:8000/ai/generate_recipe/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
 
     if (!response.ok) {
       throw new Error("Failed to generate recipe");
@@ -50,7 +47,7 @@ const GenerateRecipe = () => {
     setRecipeResponse(null);
 
     if (!userInput) {
-      setError("Field is required");
+      setError("Please enter a dish description.");
       setLoading(false);
       setShow(false);
       return;
@@ -89,16 +86,7 @@ const GenerateRecipe = () => {
             {loading ? "Generating..." : "Generate"}
           </Button>
         </Form>
-        {error && (
-          <ErrorTextStyled>
-            <InfoCircle
-              size={14}
-              color="#e84242"
-              style={{ marginRight: "0.75rem" }}
-            />
-            Error: {error}
-          </ErrorTextStyled>
-        )}
+        {error && <p style={{ paddingTop: "1rem", color: "red" }}>{error}</p>}
         {show ? (
           <CustomContainer className="generate-response">
             {recipeResponse && (
