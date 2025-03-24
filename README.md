@@ -10,3 +10,5 @@ Steps to run Frontend UI in localhost
     - If you encounter issues, try (at your own risk, got this from ChatGPT):
         rm -rf node_modules package-lock.json && npm install
     - Ensure Node.js and npm are installed (check with `node -v` and `npm -v`)
+
+3. Testing CI integration
