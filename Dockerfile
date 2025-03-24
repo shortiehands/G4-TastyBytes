@@ -10,7 +10,7 @@ COPY package.json package-lock.json ./
 RUN npm install --frozen-lockfile
 
 # Copy all frontend files and build the React app
-COPY src /g4-tastybytes-frontend/
+COPY . /g4-tastybytes-frontend/
 RUN npm run build
 
 # Stage 2: Set up FastAPI backend
