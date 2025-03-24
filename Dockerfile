@@ -1,44 +1,59 @@
-# Stage 1: Build the React app
+# Stage 1: Build React frontend
 FROM node:18-alpine AS react-build
 
-WORKDIR /g4-tastybytes
+# Set working directory for frontend
+WORKDIR /g4-tastybytes/frontend
 
-# Copy the frontend package files
+# Copy package.json and package-lock.json for frontend
 COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm install --frozen-lockfile
+# Install frontend dependencies
+RUN npm install
 
-# Copy all frontend files and build the React app
+# Copy the rest of the frontend code
 COPY . .
-RUN npm run build && ls -l /g4-tastybytes/build
 
-# Stage 2: Set up FastAPI backend
+# Build the React app
+RUN npm run build
+
+# Stage 2: Build FastAPI backend
 FROM python:3.11-slim AS fastapi-build
 
-# Copy the backend requirements
-COPY requirements.txt /g4-tastybytes/requirements.txt
+# Set working directory for backend
+WORKDIR /g4-tastybytes
+
+# Copy the requirements file for backend
+COPY requirements.txt /g4-tastybytes/
 
 # Install backend dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the FastAPI app code
-COPY . /g4-tastybytes/
+# Copy the rest of the backend code
+COPY . .
 
-# Stage 3: Final image combining FastAPI and React
-FROM nginx:alpine
+# Stage 3: Serve React frontend with Nginx
+FROM nginx:alpine AS nginx-frontend
 
-# Copy the built React files from the react-build stage
-COPY --from=react-build /g4-tastybytes/build /usr/share/nginx/html
+# Copy the build folder from the React build stage to Nginx HTML folder
+COPY --from=react-build /g4-tastybytes/frontend/build /usr/share/nginx/html
 
-# Copy the FastAPI app files (if required for runtime)
+# Expose port 80 for Nginx
+EXPOSE 80
+
+# Start Nginx to serve the React app
+CMD ["nginx", "-g", "daemon off;"]
+
+# Stage 4: Final backend setup
+FROM python:3.11-slim AS backend
+
+# Set working directory for backend
+WORKDIR /g4-tastybytes
+
+# Copy the FastAPI backend code from the build stage
 COPY --from=fastapi-build /g4-tastybytes /g4-tastybytes
 
-# Expose necessary ports
-# For React (served by Nginx)
-EXPOSE 80
-# For FastAPI
+# Expose FastAPI port
 EXPOSE 8000
 
-# Run both FastAPI and Nginx to serve the frontend
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port 8000 & nginx -g 'daemon off;'"]
+# Start FastAPI with uvicorn
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
