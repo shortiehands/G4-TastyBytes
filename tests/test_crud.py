@@ -30,9 +30,10 @@ def sample_recipe():
     """Fixture to provide a sample recipe object."""
     return RecipeCreate(
         title="Spaghetti Carbonara",
-        type="Italian",
+        description="Italian",
         ingredients="Spaghetti, eggs, pancetta, parmesan, black pepper",
-        steps="Boil pasta, cook pancetta, mix with eggs and cheese"
+        steps="Boil pasta, cook pancetta, mix with eggs and cheese",
+        owner="test_user"
     )
 
 def test_create_recipe(db_session, sample_recipe):
@@ -64,7 +65,7 @@ def test_update_recipe(db_session, sample_recipe):
     username = "test_user"
     created_recipe = create_recipe(db_session, sample_recipe, username)
     updated_title = "Updated Carbonara"
-    updated_description = "New instructions"
+    updated_description = "Updated Italian"
     updated_recipe = update_recipe(
         db_session, created_recipe.id, updated_title, updated_description, sample_recipe.ingredients, sample_recipe.steps
     )
