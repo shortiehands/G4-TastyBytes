@@ -1,10 +1,10 @@
+
 import logging
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
 from fastapi.staticfiles import StaticFiles
 #from app.routes import books, ai, chroma, reviews
-from app.routes import reviews
 from app.exceptions import ServiceException
 from app.db.session import engine, Base
 from app.routes import recipe
@@ -68,14 +68,13 @@ async def global_exception_handler(request: Request, exc: Exception):
 app.include_router(recipe.router)
 # Include routes
 # app.include_router(books.router, prefix="/books", tags=["Books"])
-app.include_router(reviews.router, prefix="", tags=["Reviews"])
+# app.include_router(reviews.router, prefix="", tags=["Reviews"])
 # app.include_router(ai.router, prefix="/ai", tags=["AI"])
 # app.include_router(chroma.router, prefix="/chroma", tags=["ChromaDB"])
 # Uncomment this line to include the Auth router
 app.include_router(auth.router, prefix="", tags=["Auth"])
 
-#app.mount("/public", StaticFiles(directory="public"), name="public")app.include_router(reviews.router)
-
+#app.mount("/public", StaticFiles(directory="public"), name="public")
 # Serve static files (CSS, JS if needed)
 #app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
