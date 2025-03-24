@@ -1,21 +1,20 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
+from app.models.review import ReviewResponse
 
 class RecipeBase(BaseModel):
     title: str
     type: str
     ingredients: str
     steps: str
-   
+    username: str
+
 class RecipeCreate(RecipeBase):
     pass
 
-class RecipeUpdate(RecipeBase):
-    pass
-
-class RecipeInDB(RecipeBase):
+class Recipe(RecipeBase):
     id: int
-    owner: str
+    reviews: Optional[List[ReviewResponse]] = []
 
     class Config:
         from_attributes = True 
