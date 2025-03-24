@@ -6,21 +6,25 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-
 _base_url = "https://api.groq.com/openai/v1"
 _model = "llama3-70b-8192"
-_api_key = os.getenv("OPENAI_API_KEY")
 
-client = openai.OpenAI(
-    api_key=_api_key,
-    base_url=_base_url
-)
+def get_openai_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError("OpenAI API key not found. Ensure it is set in the .env file.")
+
+    return openai.OpenAI(
+        api_key=api_key,
+        base_url=_base_url,
+    )
 
 # print("Available Models:")
 # for model in client.models.list():
 #     print(f"- {model.id}")
 
 def get_completion_for_messages(messages, model=_model):
+    client = get_openai_client()
     try:
         response = client.chat.completions.create(
         messages=messages, model=model,
