@@ -2,14 +2,15 @@ from sqlalchemy.orm import Session
 from app.models.recipe import Recipe
 from app.schema.recipe import RecipeCreate
 
-def get_recipes(db: Session, username: str):
-    return db.query(Recipe).filter(Recipe.username == username).all()
+def get_recipes(db: Session, owner: str):
+    return db.query(Recipe).filter(Recipe.owner == owner).all()
 
-def get_recipe(db: Session, recipe_id: int, username: str):
-    return db.query(Recipe).filter(Recipe.id == recipe_id, Recipe.username == username).first()
+def get_recipe(db: Session, recipe_id: int, owner: str):
+    return db.query(Recipe).filter(Recipe.id == recipe_id, Recipe.owner == owner).first()
 
-def create_recipe(db: Session, recipe: RecipeCreate,username: str):
-    new_recipe = Recipe(title=recipe.title, description=recipe.description, ingredients=recipe.ingredients, steps=recipe.steps, username=username)
+
+def create_recipe(db: Session, recipe: RecipeCreate,owner: str):
+    new_recipe = Recipe(title=recipe.title, type=recipe.type, ingredients=recipe.ingredients, steps=recipe.steps, owner=owner)
     db.add(new_recipe)
     db.commit()
     db.refresh(new_recipe)
@@ -23,11 +24,13 @@ def delete_recipe(db: Session, recipe_id: int):
         return True
     return False
 
-def update_recipe(db: Session, recipe_id: int, title: str, description: str, ingredients: str, steps: str):
+
+
+def update_recipe(db: Session, recipe_id: int, title: str, type: str, ingredients: str, steps: str):
     recipe = db.query(Recipe).filter(Recipe.id == recipe_id).first()
     if recipe:
         recipe.title = title
-        recipe.description = description
+        recipe.type = type
         recipe.ingredients = ingredients
         recipe.steps = steps
         db.commit()

@@ -1,93 +1,76 @@
-#Test cases for the CRUD operations of the recipe service
-
-from unittest.mock import MagicMock
+import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from app.models.recipe import Recipe, Base
+from app.services.recipe_service import (
+    get_recipes, get_recipe, create_recipe, update_recipe, delete_recipe
+)
 from app.schema.recipe import RecipeCreate
-from app.services.recipe_service import create_recipe
-from app.services.recipe_service import get_recipes
-from app.services.recipe_service import get_recipe
-from app.services.recipe_service import delete_recipe
-from app.services.recipe_service import update_recipe
-from app.models.recipe import Recipe
 
+# Create an in-memory SQLite database for testing
+SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def test_create_recipe():
-    # Mock DB session
-    mock_db = MagicMock()
+@pytest.fixture
+def db_session():
+    """Fixture to create a new database session for each test."""
+    Base.metadata.create_all(bind=engine)  # Create tables
+    db = TestingSessionLocal()
+    try:
+        yield db  # Provide the session to the test
+    finally:
+        db.close()
+        Base.metadata.drop_all(bind=engine)  # Clean up after test
 
-    # Example recipe data
-    recipe_data = Recipe(
-        title="Test Recipe",
-        type="Delicious test dish",
-        ingredients="Flour, Sugar, Eggs",
-        steps="Mix and bake",
-       
+@pytest.fixture
+def sample_recipe():
+    """Fixture to provide a sample recipe object."""
+    return RecipeCreate(
+        title="Spaghetti Carbonara",
+        type="Italian",
+        ingredients="Spaghetti, eggs, pancetta, parmesan, black pepper",
+        steps="Boil pasta, cook pancetta, mix with eggs and cheese"
     )
 
-    # Call function
-    new_recipe = create_recipe(mock_db, recipe_data,"test_owner")
+def test_create_recipe(db_session, sample_recipe):
+    """Test creating a new recipe."""
+    username = "test_user"
+    recipe = create_recipe(db_session, sample_recipe, username)
+    assert recipe.id is not None
+    assert recipe.title == sample_recipe.title
+    assert recipe.owner == username
 
-    # Assertions
-    assert new_recipe.title == "Test Recipe"
-    assert new_recipe.type == "Delicious test dish"
-    assert new_recipe.ingredients == "Flour, Sugar, Eggs"
-    assert new_recipe.steps == "Mix and bake"
-    assert new_recipe.owner == "test_owner"  
+def test_get_recipes(db_session, sample_recipe):
+    """Test retrieving all recipes for a user."""
+    username = "test_user"
+    create_recipe(db_session, sample_recipe, username)
+    recipes = get_recipes(db_session, username)
+    assert len(recipes) == 1
+    assert recipes[0].title == sample_recipe.title
 
-    # Check if the database functions were called
-    mock_db.add.assert_called_once()
-    mock_db.commit.assert_called_once()
-    mock_db.refresh.assert_called_once_with(new_recipe)
+def test_get_recipe(db_session, sample_recipe):
+    """Test retrieving a single recipe by ID."""
+    username = "test_user"
+    created_recipe = create_recipe(db_session, sample_recipe, username)
+    retrieved_recipe = get_recipe(db_session, created_recipe.id, username)
+    assert retrieved_recipe is not None
+    assert retrieved_recipe.title == sample_recipe.title
 
-
-def test_get_recipes():
-    mock_db = MagicMock()
-    mock_db.query().filter().all.return_value = [
-        Recipe(id=1, title="Recipe 1", owner="test_user"),
-        Recipe(id=2, title="Recipe 2", owner="test_user")
-    ]
-
-    recipes = get_recipes(mock_db, "test_user")
-
-    assert len(recipes) == 2
-    assert recipes[0]["title"] == "Recipe 1"
-    assert recipes[1]["title"] == "Recipe 2"
-
-
-
-def test_get_recipe():
-    mock_db = MagicMock()
-    mock_db.query().filter().first.return_value = Recipe(
-    id=1, title="Test Recipe", owner="test_user")
-    
-
-    recipe = get_recipe(mock_db, 1, "test_user")
-
-    assert recipe["title"] == "Test Recipe"
-
-def test_delete_recipe():
-    mock_db = MagicMock()
-    mock_db.query().filter().first.return_value = {"id": 1, "title": "Test Recipe"}
-
-    result = delete_recipe(mock_db, 1)
-
-    assert result is True
-    mock_db.delete.assert_called_once()
-    mock_db.commit.assert_called_once()
-
-def test_update_recipe():
-    mock_db = MagicMock()
-    mock_recipe =  Recipe(
-    id=1, title="Old Title", type="Old Description",
-    ingredients="Old Ingredients", steps="Old Steps", owner="test_user")
-    
-    mock_db.query().filter().first.return_value = mock_recipe
-
-    result = update_recipe(
-        mock_db, 1, 
-        "New Title", "New Description", "New Ingredients", "New Steps"
+def test_update_recipe(db_session, sample_recipe):
+    """Test updating a recipe."""
+    username = "test_user"
+    created_recipe = create_recipe(db_session, sample_recipe, username)
+    updated_title = "Updated Carbonara"
+    updated_description = "New instructions"
+    updated_recipe = update_recipe(
+        db_session, created_recipe.id, updated_title, updated_description, sample_recipe.ingredients, sample_recipe.steps
     )
+    assert updated_recipe["recipe"].title == updated_title
 
-    assert result["message"] == "Recipe updated successfully!"
-    assert result["recipe"]["title"] == "New Title"
-    assert result["recipe"]["type"] == "New Description"
-
+def test_delete_recipe(db_session, sample_recipe):
+    """Test deleting a recipe."""
+    username = "test_user"
+    created_recipe = create_recipe(db_session, sample_recipe, username)
+    assert delete_recipe(db_session, created_recipe.id) is True
+    assert get_recipe(db_session, created_recipe.id, username) is None
