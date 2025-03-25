@@ -1,0 +1,11 @@
+node_modules/     # Node.js dependencies
+dist/            # Webpack's output directory (if generated)
+.cache/          # Babel and Webpack cache files (if applicable)
+coverage/        # Test coverage reports (if using Jest)
+.DS_Store        # macOS system file
+Thumbs.db
+.env
+*.pyc
+node_modules
+src/.DS_Store
+venv/
