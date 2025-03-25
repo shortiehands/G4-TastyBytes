@@ -4,14 +4,14 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer
 from fastapi.staticfiles import StaticFiles
-#from app.routes import books, ai, chroma, reviews
-from app.routes import reviews
-from app.exceptions import ServiceException
-from app.db.session import engine, Base
-from app.routes import llm, recipe
+#from backend.app.routes import books, ai, chroma, reviews
+from backend.app.routes import reviews
+from backend.app.exceptions import ServiceException
+from backend.app.db.session import engine, Base
+from backend.app.routes import llm, recipe
 
 # Uncomment this line to include the Auth router
-from app.routes import auth
+from backend.app.routes import auth
 from fastapi.middleware.cors import CORSMiddleware
 
 

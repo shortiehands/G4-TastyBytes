@@ -1,11 +1,11 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.models.recipe import Recipe, Base
-from app.services.recipe_service import (
+from backend.app.models.recipe import Recipe, Base
+from backend.app.services.recipe_service import (
     get_recipes, get_recipe, create_recipe, update_recipe, delete_recipe, get_user_uploaded_recipes
 )
-from app.schema.recipe import RecipeCreate
+from backend.app.schema.recipe import RecipeCreate
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 

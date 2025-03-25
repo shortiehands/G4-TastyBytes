@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, HTTPException, status, Form
-from app.services.cognito_service import CognitoService
-from app.exceptions import ServiceException
+from backend.app.services.cognito_service import CognitoService
+from backend.app.exceptions import ServiceException
 
 
 router = APIRouter()

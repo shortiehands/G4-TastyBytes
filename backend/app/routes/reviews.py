@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from app.db.session import SessionLocal
-from app.models.review import ReviewInfo
-from app.services.review_service import ReviewService
+from backend.app.db.session import SessionLocal
+from backend.app.models.review import ReviewInfo
+from backend.app.services.review_service import ReviewService
 
 router = APIRouter()
 

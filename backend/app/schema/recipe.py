@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from typing import List, Optional
-from app.models.review import ReviewResponse
+from backend.app.models.review import ReviewResponse
 
 class RecipeBase(BaseModel):
     title: str
