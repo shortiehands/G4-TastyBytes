@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.models.recipe import Recipe
-from app.schema.recipe import RecipeCreate
+from backend.app.models.recipe import Recipe
+from backend.app.schema.recipe import RecipeCreate
 
 def get_recipes(db: Session, owner: str):
     return db.query(Recipe).filter(Recipe.owner == owner).all()

@@ -1,5 +1,5 @@
 from unittest.mock import MagicMock
-from app.services.recipe_service import get_recipes, get_recipe, update_recipe, delete_recipe
+from backend.app.services.recipe_service import get_recipes, get_recipe, update_recipe, delete_recipe
 
 def test_user_cannot_see_other_users_recipes():
     db = MagicMock()

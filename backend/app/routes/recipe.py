@@ -5,10 +5,10 @@ from typing import List
 import httpx
 from dotenv import load_dotenv
 import os
-from app.dependencies.get_username import get_username
-from app.db.session import get_db  # This is the dependency that provides a DB session
-from app.models.recipe import Recipe
-from app.schema.recipe import RecipeCreate, RecipeUpdate, RecipeInDB
+from backend.app.dependencies.get_username import get_username
+from backend.app.db.session import get_db  # This is the dependency that provides a DB session
+from backend.app.models.recipe import Recipe
+from backend.app.schema.recipe import RecipeCreate, RecipeUpdate, RecipeInDB
 
 router = APIRouter(prefix="/recipes", tags=["recipes"])
 

@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from app.models.review import Review, ReviewInfo
-from app.models.recipe import Recipe
+from backend.app.models.review import Review, ReviewInfo
+from backend.app.models.recipe import Recipe
 from fastapi import HTTPException, status
 
 class ReviewService:

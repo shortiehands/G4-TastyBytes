@@ -1,6 +1,6 @@
 import pytest
 import os
-from app.services.llm_service import post_process, generate_recipe
+from backend.app.services.llm_service import post_process, generate_recipe
 
 def test_get_openai_client():
     openai_api_key = os.getenv("OPENAI_API_KEY")
