@@ -8,7 +8,7 @@ COPY . ./
 RUN npm run build
 
 # Stage 2: Build FastAPI backend
-FROM python:3.11-slim AS fastapi-build
+FROM python:3.11 AS fastapi-build
 
 WORKDIR /g4-tastybytes
 COPY requirements.txt /g4-tastybytes/
