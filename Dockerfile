@@ -9,7 +9,7 @@ RUN npm run build
 # Stage 2: Build FastAPI backend
 FROM python:3.11-slim AS fastapi-build
 WORKDIR /g4-tastybytes
-COPY backend/requirements.txt /g4-tastybytes
+COPY requirements.txt /g4-tastybytes
 RUN pip install --no-cache-dir -r requirements.txt
 COPY . /g4-tastybytes
 
