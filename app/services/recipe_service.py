@@ -37,3 +37,15 @@ def update_recipe(db: Session, recipe_id: int, title: str, type: str, ingredient
         db.refresh(recipe)  # Ensures the returned recipe has updated values
 
     return {"message": "Recipe updated successfully!", "recipe": recipe}
+
+def get_user_uploaded_recipes(db: Session, ingredients: str):
+     """
+     Search for recipes from the internal DB that include any of the given ingredients.
+     """
+     terms = [term.strip().lower() for term in ingredients.split(",")]
+     
+     query = db.query(Recipe)
+     for term in terms:
+         query = query.filter(Recipe.ingredients.ilike(f"%{term}%"))
+     
+     return query.all()

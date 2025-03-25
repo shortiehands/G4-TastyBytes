@@ -16,3 +16,4 @@ uvicorn
 dotenv
 pymysql
 pytest
+pytest-mock

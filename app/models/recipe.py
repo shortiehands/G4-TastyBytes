@@ -12,4 +12,6 @@ class Recipe(Base):
     steps = Column(Text, nullable=False)
     owner = Column(String(100), nullable=False)  # ✅ Added length
 
+    reviews = relationship("Review", back_populates="recipe")
+
    
