@@ -28,4 +28,10 @@ const UserRecipesDiv = styled.div`
   border: 1px solid #e2d6c3;
 `;
 
-export { CardStyled, TextStyled, ColStyled, UserRecipesDiv };
+const ReviewDiv = styled.div`
+  display: flex;
+  justify-ontent: space-between;
+  align-items: center;
+`;
+
+export { CardStyled, TextStyled, ColStyled, UserRecipesDiv, ReviewDiv };

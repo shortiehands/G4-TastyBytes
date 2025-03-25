@@ -3,7 +3,7 @@ import TextField from "../../components/FormLayout/TextField";
 import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
 import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
-import { ErrorTextStyled, HeaderText } from "./styles";
+import { ColStyled, ErrorTextStyled, HeaderText } from "./styles";
 import { InfoCircle } from "iconsax-react";
 
 interface RecipeResponse {
@@ -100,7 +100,7 @@ const GenerateRecipe = () => {
                   {recipeResponse.overview}
                 </Row>
                 <Row>
-                  <Col md={12} lg={6}>
+                  <ColStyled md={12} lg={6}>
                     <Card
                       style={{
                         borderRadius: "0.625rem",
@@ -129,8 +129,8 @@ const GenerateRecipe = () => {
                         </ListGroup>
                       </Card.Body>
                     </Card>
-                  </Col>
-                  <Col md={12} lg={6}>
+                  </ColStyled>
+                  <ColStyled md={12} lg={6}>
                     <Card
                       style={{
                         borderRadius: "0.625rem",
@@ -155,7 +155,7 @@ const GenerateRecipe = () => {
                         </ListGroup>
                       </Card.Body>
                     </Card>
-                  </Col>
+                  </ColStyled>
                 </Row>
               </>
             )}

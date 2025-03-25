@@ -28,6 +28,7 @@ class ReviewService:
             new_review = Review(
                 recipe_id=recipe_id,
                 review=review_data.review,
+                rating=review_data.rating,
                 username=review_data.username
             )
             self.db.add(new_review)

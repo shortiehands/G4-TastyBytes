@@ -104,7 +104,7 @@ const FindRecipe = () => {
             searchResults.length > 0 ? (
               <ShowRecipes items={searchResults} />
             ) : (
-              <p style={{ color: "red" }}>No recipe found.</p>
+              <p style={{ color: "red" }}>No recipes found.</p>
             )
           ) : (
             <></>
