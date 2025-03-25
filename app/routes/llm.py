@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Body, HTTPException
 from dotenv import load_dotenv
-from app.models.recipe import Recipe
-from app.schema.recipe import LLMRecipeResponse
+from app.schema.llm import LLMRecipeResponse
 from app.services.llm_service import generate_recipe
 
 router = APIRouter(prefix="/ai", tags=["AI"])

@@ -11,5 +11,5 @@ class Recipe(Base):
     ingredients = Column(Text, nullable=False)
     steps = Column(Text, nullable=False)
     owner = Column(String(100), nullable=False)  # ✅ Added length
-
+    reviews = relationship("Review", back_populates="recipe")
    
