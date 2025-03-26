@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
     
       - name: Set PYTHONPATH
-        run: echo "PYTHONPATH=/Users/sidraarshad/G4-TasteBytes/backend" >> $GITHUB_ENV
+        run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -45,6 +45,7 @@ jobs:
 
       - name: Run tests with pytest
         run: |
+          cd backend
           pytest -v -s
       
       #- name: Set up Node.js
