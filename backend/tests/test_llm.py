@@ -43,7 +43,7 @@ def test_post_process_structure(mock_llm_response):
 
 def test_generate_recipe_with_mock(mocker, mock_llm_response):
     # Patch the LLM call to return mock response instead of real API
-    mocker.patch("app.services.llm_service.get_completion_for_messages", return_value=mock_llm_response)
+    mocker.patch("backend.app.services.llm_service.get_completion_for_messages", return_value=mock_llm_response)
 
     prompt = "A healthy chocolate cake with no dairy or refined sugar"
     result = generate_recipe(prompt)

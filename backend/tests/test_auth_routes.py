@@ -16,7 +16,7 @@ def override_router():
 
 
 def test_login_success():
-    with patch('app.routes.auth.cognito_service.authenticate_user') as mock_auth:
+    with patch('backend.app.routes.auth.cognito_service.authenticate_user') as mock_auth:
         mock_auth.return_value = {
             "id_token": "id_token",
             "access_token": "access_token",
@@ -30,14 +30,14 @@ def test_login_success():
 
 
 def test_login_failure():
-    with patch('app.routes.auth.cognito_service.authenticate_user', side_effect=ServiceException(401, "Invalid creds")):
+    with patch('backend.app.routes.auth.cognito_service.authenticate_user', side_effect=ServiceException(401, "Invalid creds")):
         response = client.post("/login", data={"username": "testuser", "password": "wrongpass"})
         assert response.status_code == 401
         assert response.json()["detail"] == "Invalid creds"
 
 
 def test_registration_success():
-    with patch('app.routes.auth.cognito_service.register_user') as mock_register:
+    with patch('backend.app.routes.auth.cognito_service.register_user') as mock_register:
         mock_register.return_value = {
             "UserSub": "user-123",
             "UserConfirmed": False
@@ -50,7 +50,7 @@ def test_registration_success():
 
 
 def test_registration_failure():
-    with patch('app.routes.auth.cognito_service.register_user', side_effect=ServiceException(400, "User already exists")):
+    with patch('backend.app.routes.auth.cognito_service.register_user', side_effect=ServiceException(400, "User already exists")):
         response = client.post("/registration", data={"username": "newuser", "email": "email@test.com", "password": "Password123"})
         assert response.status_code == 400
         assert response.json()["detail"] == "User already exists"
@@ -58,8 +58,8 @@ def test_registration_failure():
 
 
 def test_confirmation_success():
-    with patch('app.routes.auth.cognito_service.client.confirm_sign_up') as mock_confirm, \
-         patch('app.routes.auth.cognito_service.calculate_secret_hash') as mock_secret_hash:
+    with patch('backend.app.routes.auth.cognito_service.client.confirm_sign_up') as mock_confirm, \
+         patch('backend.app.routes.auth.cognito_service.calculate_secret_hash') as mock_secret_hash:
         
         mock_secret_hash.return_value = "fake_hash"
         mock_confirm.return_value = {}
@@ -71,8 +71,8 @@ def test_confirmation_success():
         mock_secret_hash.assert_called_once()
 
 def test_confirmation_failure():
-    with patch('app.routes.auth.cognito_service.client.confirm_sign_up', side_effect=ServiceException(400, "Invalid confirmation code")), \
-         patch('app.routes.auth.cognito_service.calculate_secret_hash') as mock_secret_hash:
+    with patch('backend.app.routes.auth.cognito_service.client.confirm_sign_up', side_effect=ServiceException(400, "Invalid confirmation code")), \
+         patch('backend.app.routes.auth.cognito_service.calculate_secret_hash') as mock_secret_hash:
         
         mock_secret_hash.return_value = "fake_hash"
 
