@@ -20,14 +20,14 @@ COPY . .
 # Build the React app with the env variable available
 RUN npm run build
 
-# Stage 2: Serve the app using a lightweight web server
+# Stage 2: Serve the app using nginx
 FROM nginx:alpine
 
-# Copy build output from previous stage to nginx html folder
+# Copy custom nginx config
+COPY default.conf /etc/nginx/conf.d/default.conf
+
+# Copy build output from previous stage
 COPY --from=build /g4-tastybytes/frontend/build /usr/share/nginx/html
 
-# Expose port 80
 EXPOSE 80
-
-# Run nginx
 CMD ["nginx", "-g", "daemon off;"]
