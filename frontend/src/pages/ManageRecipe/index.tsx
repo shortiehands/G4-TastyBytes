@@ -15,8 +15,8 @@ import Title from "../../components/Title";
 import { DivStyled, TextStyled } from "./styles";
 import ModalResult from "../../components/ModalResult";
 
-// Update to your actual backend URL
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = process.env.REACT_APP_URL;
+// const BASE_URL = "http://localhost:8000";
 
 const ManageRecipe = () => {
   const [recipes, setRecipes] = useState<recipeItem[]>([]);

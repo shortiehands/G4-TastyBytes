@@ -3,7 +3,6 @@ from pydantic import BaseModel, field_validator
 class ReviewBase(BaseModel):
     rating: int
     review: str
-    created_at: str
 
     @field_validator('rating')
     def validate_rating(cls, rating):

@@ -1,26 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Title from "../../components/Title";
 import CustomContainer from "../../components/CustomContainer";
-import { Form, Button, Table, Row, Col, Card } from "react-bootstrap";
+import { Form, Button, Row, Card } from "react-bootstrap";
 import TextField from "../../components/FormLayout/TextField";
 import { recipeItem } from "./recipeList";
 import ShowRecipes from "./showRecipes";
-import { CardStyled, ColStyled, UserRecipesDiv } from "./styles";
-import { useNavigate } from "react-router-dom";
-import { paths } from "../../configs/routes";
+import { CardStyled, ColStyled } from "./styles";
+import { useLocation, useNavigate } from "react-router-dom";
 
-// Update to your actual backend URL
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = process.env.REACT_APP_URL;
+// const BASE_URL = "http://localhost:8000";
 
 const FindRecipe = () => {
   const navigate = useNavigate();
   const [apiError, setApiError] = useState("");
   const [dbError, setDbError] = useState("");
   const [searchResults, setSearchResults] = useState<recipeItem[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
   const [searchDbResults, setSearchDbResults] = useState<recipeItem[]>([]);
+
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState<string>(
+    (location.state as any)?.searchTerm || ""
+  );
 
   const handleSearch = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
@@ -104,7 +107,7 @@ const FindRecipe = () => {
             searchResults.length > 0 ? (
               <ShowRecipes items={searchResults} />
             ) : (
-              <p style={{ color: "red" }}>No recipe found.</p>
+              <p style={{ color: "red" }}>No recipes found.</p>
             )
           ) : (
             <></>
@@ -124,7 +127,7 @@ const FindRecipe = () => {
                       style={{ cursor: "pointer", width: "100%" }}
                       onClick={() =>
                         navigate(`/recipe-details/${recipe.id}`, {
-                          state: { recipe },
+                          state: { recipe, fromFind: true, searchTerm },
                         })
                       }
                     >

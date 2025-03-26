@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import TextField from "../../components/FormLayout/TextField";
-import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Form, ListGroup, Row } from "react-bootstrap";
 import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
-import { ErrorTextStyled, HeaderText } from "./styles";
-import { InfoCircle } from "iconsax-react";
+import { ColStyled, HeaderText } from "./styles";
+
+const BASE_URL = process.env.REACT_APP_URL;
+// const BASE_URL = "http://localhost:8000";
 
 interface RecipeResponse {
   recipe_name: string;
@@ -24,7 +26,7 @@ const GenerateRecipe = () => {
 
   // Call the FastAPI endpoint to generate a recipe from the prompt
   const generateRecipe = async (prompt: string): Promise<RecipeResponse> => {
-    const response = await fetch("http://localhost:8000/ai/generate_recipe/", {
+    const response = await fetch(`${BASE_URL}/ai/generate_recipe/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -100,7 +102,7 @@ const GenerateRecipe = () => {
                   {recipeResponse.overview}
                 </Row>
                 <Row>
-                  <Col md={12} lg={6}>
+                  <ColStyled md={12} lg={6}>
                     <Card
                       style={{
                         borderRadius: "0.625rem",
@@ -129,8 +131,8 @@ const GenerateRecipe = () => {
                         </ListGroup>
                       </Card.Body>
                     </Card>
-                  </Col>
-                  <Col md={12} lg={6}>
+                  </ColStyled>
+                  <ColStyled md={12} lg={6}>
                     <Card
                       style={{
                         borderRadius: "0.625rem",
@@ -155,7 +157,7 @@ const GenerateRecipe = () => {
                         </ListGroup>
                       </Card.Body>
                     </Card>
-                  </Col>
+                  </ColStyled>
                 </Row>
               </>
             )}

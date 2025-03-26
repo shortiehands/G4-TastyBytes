@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { colors } from "../../styles/Theme";
+import { Col } from "react-bootstrap";
 
 const HeaderText = styled.p`
   text-align: center;
@@ -24,4 +25,8 @@ const ErrorTextStyled = styled.p`
   color: ${colors.red};
 `;
 
-export { HeaderText, ErrorTextStyled };
+const ColStyled = styled(Col)`
+  display: flex;
+  align-items: stretch;
+`;
+export { HeaderText, ErrorTextStyled, ColStyled };

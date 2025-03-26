@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Row } from "react-bootstrap";
-import { UserRecipesDiv } from "../styles";
+import { Col, Row } from "react-bootstrap";
+import { ReviewDiv, UserRecipesDiv } from "../styles";
 import { useLocation, useNavigate } from "react-router-dom";
 import { recipeItem } from "../recipeList";
 import CustomContainer from "../../../components/CustomContainer";
 import Title from "../../../components/Title";
 import RecipeReviews from "../RecipeReviews";
+import { Back } from "iconsax-react";
+import { paths } from "../../../configs/routes";
 
 interface LocationState {
   recipe: recipeItem;
   fromFind: boolean;
+  searchTerm: string;
 }
 
 const RecipeDetails = () => {
   const { state } = useLocation() as { state: LocationState };
+  const navigate = useNavigate();
   const recipe = state?.recipe;
+  const fromFind = state?.fromFind;
+  const searchTerm = state?.searchTerm;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, []);
 
   return (
     <>
@@ -23,7 +33,23 @@ const RecipeDetails = () => {
           <p style={{ color: "red" }}>Recipe data not found.</p>
         ) : (
           <>
-            <Title title="Recipe Details" className="center" />
+            <ReviewDiv className="back">
+              <span style={{ cursor: "pointer" }}>
+                <Back
+                  size={20}
+                  color="black"
+                  onClick={() =>
+                    navigate("/" + paths.findRecipe, {
+                      state: { searchTerm },
+                    })
+                  }
+                />
+              </span>
+              <Title
+                title="Recipe Details"
+                style={{ fontSize: "1.75rem", marginBottom: "0" }}
+              />
+            </ReviewDiv>
             <Row className="mb-4">
               {recipe && (
                 <UserRecipesDiv key={recipe.id} className="p-3">

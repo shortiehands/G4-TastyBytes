@@ -22,6 +22,9 @@ import { paths } from "../../../configs/routes";
 import CustomButton from "../../../components/CustomButton";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_URL;
+// const BASE_URL = "http://localhost:8000";
+
 const LoginForm: React.FC<any> = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
@@ -53,7 +56,7 @@ const LoginForm: React.FC<any> = () => {
     }
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/login",
+        `${BASE_URL}/login`,
         new URLSearchParams({ username, password }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
       );
@@ -62,7 +65,6 @@ const LoginForm: React.FC<any> = () => {
       localStorage.setItem("username", data.tokens.username);
       localStorage.setItem("token", data.access_token);
       navigate("/" + paths.home);
-
     } catch (error) {
       setError("Error connecting to server");
       console.error("Login error:", error);
@@ -251,11 +253,7 @@ const LoginForm: React.FC<any> = () => {
                 </NavLinkStyled>
               </FormGroup> */}
             </Stack>
-            <CustomButton
-              title="LOGIN"
-              disabled={loading}
-              type="submit"
-            />
+            <CustomButton title="LOGIN" disabled={loading} type="submit" />
           </Form>
 
           <p

@@ -1,7 +1,8 @@
+from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from backend.app.db.session import SessionLocal
-from backend.app.models.review import ReviewInfo
+from backend.app.models.review import ReviewInfo, ReviewResponse
 from backend.app.services.review_service import ReviewService
 
 router = APIRouter()
@@ -13,7 +14,7 @@ def get_db():
     finally:
         db.close()
 
-@router.get("/recipes/{recipe_id}/reviews")
+@router.get("/recipes/{recipe_id}/reviews", response_model=List[ReviewResponse])
 def get_reviews(recipe_id: int, db: Session = Depends(get_db)):
     review_service = ReviewService(db)
     reviews = review_service.get_review_by_recipe_id(recipe_id)
@@ -24,7 +25,7 @@ def get_reviews(recipe_id: int, db: Session = Depends(get_db)):
         )
     return reviews
 
-@router.get("/recipes/{recipe_id}/reviews/{username}")
+@router.get("/recipes/{recipe_id}/reviews/{username}", response_model=ReviewResponse)
 def get_user_review(recipe_id: int, username: str, db: Session = Depends(get_db)):
     review_service = ReviewService(db)
     review = review_service.get_user_review(recipe_id, username)
@@ -35,7 +36,7 @@ def get_user_review(recipe_id: int, username: str, db: Session = Depends(get_db)
         )
     return review
 
-@router.post("/recipes/{recipe_id}/reviews")
+@router.post("/recipes/{recipe_id}/reviews", response_model=ReviewResponse)
 def add_review(recipe_id: int, review: ReviewInfo, db: Session = Depends(get_db)):
     review_service = ReviewService(db)
     new_review = review_service.add_review(recipe_id, review)
@@ -46,7 +47,7 @@ def add_review(recipe_id: int, review: ReviewInfo, db: Session = Depends(get_db)
         )
     return new_review
 
-@router.put("/recipes/{recipe_id}/reviews/{username}")
+@router.put("/recipes/{recipe_id}/reviews/{username}", response_model=ReviewResponse)
 def update_review(recipe_id: int, username: str, review: ReviewInfo, db: Session = Depends(get_db)):
     review_service = ReviewService(db)
     updated_review = review_service.update_review(recipe_id, username, review)

@@ -121,3 +121,5 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: ${{ env.TAGS }}
+          build-args: |
+            REACT_APP_URL=http://g4tastybyteslb-488912386.ap-southeast-1.elb.amazonaws.com:8000

@@ -12,10 +12,12 @@ import { Logo } from "../Images";
 import { paths } from "../../configs/routes";
 import { Profile } from "iconsax-react";
 import { useNavigate } from "react-router-dom";
+import ModalResult from "../ModalResult";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [showSignoutModal, setShowSignoutModal] = useState<boolean>(false);
 
   useEffect(() => {
     const checkAuth = () => {
@@ -76,10 +78,12 @@ const Header: React.FC = () => {
               >
                 {isAuthenticated ? (
                   <>
-                    <NavDropdown.Item onClick={() => navigate("/" + paths.profile)}>
+                    <NavDropdown.Item
+                      onClick={() => navigate("/" + paths.profile)}
+                    >
                       My Profile
                     </NavDropdown.Item>
-                    <NavDropdown.Item onClick={handleSignOut}>
+                    <NavDropdown.Item onClick={() => setShowSignoutModal(true)}>
                       Sign Out
                     </NavDropdown.Item>
                   </>
@@ -96,6 +100,15 @@ const Header: React.FC = () => {
             </DivControl>
           </Col>
         </NavContainer>
+        <ModalResult
+          show={showSignoutModal}
+          isSuccess={true}
+          onHide={() => {
+            setShowSignoutModal(false);
+            handleSignOut();
+          }}
+          title="You have successfully signed out!"
+        />
       </HeaderMain>
     </>
   );
