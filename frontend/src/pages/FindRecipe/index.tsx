@@ -6,7 +6,7 @@ import TextField from "../../components/FormLayout/TextField";
 import { recipeItem } from "./recipeList";
 import ShowRecipes from "./showRecipes";
 import { CardStyled, ColStyled } from "./styles";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BASE_URL = process.env.REACT_APP_URL;
 // const BASE_URL = "http://localhost:8000";
@@ -16,10 +16,14 @@ const FindRecipe = () => {
   const [apiError, setApiError] = useState("");
   const [dbError, setDbError] = useState("");
   const [searchResults, setSearchResults] = useState<recipeItem[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
   const [searchDbResults, setSearchDbResults] = useState<recipeItem[]>([]);
+
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState<string>(
+    (location.state as any)?.searchTerm || ""
+  );
 
   const handleSearch = async (e: { preventDefault: () => void }) => {
     e.preventDefault();

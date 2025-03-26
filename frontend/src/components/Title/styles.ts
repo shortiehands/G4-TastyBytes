@@ -19,7 +19,7 @@ const TitleStyled = styled.p`
     text-align: center;
 
     @media (max-width: 576px) {
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.5rem;
     }
   }
 `;

@@ -32,6 +32,11 @@ const ReviewDiv = styled.div`
   display: flex;
   justify-ontent: space-between;
   align-items: center;
+
+  &.back {
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
 `;
 
 export { CardStyled, TextStyled, ColStyled, UserRecipesDiv, ReviewDiv };
