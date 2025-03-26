@@ -7,7 +7,7 @@ import base64
 from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import requests
-from app.exceptions import ServiceException
+from backend.app.exceptions import ServiceException
 from dotenv import load_dotenv
 
 load_dotenv()

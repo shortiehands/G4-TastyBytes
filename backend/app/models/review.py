@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from pydantic import BaseModel
-from app.db.session import Base
+from backend.app.db.session import Base
 
 class Review(Base):
     __tablename__ = "reviews"

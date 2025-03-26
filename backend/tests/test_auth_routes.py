@@ -1,8 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
-from app.main import app  # adjust to your FastAPI entry point
-from app.routes import auth  # adjust based on your folder structure
-from app.exceptions import ServiceException
+from backend.app.main import app  # adjust to your FastAPI entry point
+from backend.app.routes import auth  # adjust based on your folder structure
+from backend.app.exceptions import ServiceException
 from unittest.mock import patch
 
 client = TestClient(app)
