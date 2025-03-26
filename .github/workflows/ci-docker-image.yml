@@ -63,37 +63,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Set up Docker Buildx
+      # Backend Build
+      - name: Set up Docker Buildx for Backend
         uses: docker/setup-buildx-action@v3
 
-      # Extract version from Git tag or branch
-      - name: Extract version
-        id: get_version
+      - name: Extract version for Backend
+        id: get_version_backend
         run: |
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
-            # Extract version number from tag (e.g., v1.0.0 → 1.0.0)
             VERSION=${GITHUB_REF#refs/tags/v}
-            TAGS="${{ env.DOCKER_IMAGE }}:$VERSION,${{ env.DOCKER_IMAGE }}:latest"
+            TAGS="${{ env.DOCKER_IMAGE }}:$VERSION-backend,${{ env.DOCKER_IMAGE }}:latest-backend"
           else
-            # If no Git tag, use timestamp-based latest tag
             TIMESTAMP=$(date +%Y%m%d%H%M%S)
-            VERSION="latest-$TIMESTAMP"
-            TAGS="${{ env.DOCKER_IMAGE }}:$VERSION,${{ env.DOCKER_IMAGE }}:latest"
+            VERSION="latest-$TIMESTAMP-backend"
+            TAGS="${{ env.DOCKER_IMAGE }}:$VERSION-backend,${{ env.DOCKER_IMAGE }}:latest-backend"
           fi
-          
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "TAGS=$TAGS" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          # set these secrets in the GitHub repository settings
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           
-      - name: Build and push Docker image
+      - name: Build and push Backend Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./backend
+          file: ./backend/Dockerfile
           push: true
           tags: ${{ env.TAGS }}
