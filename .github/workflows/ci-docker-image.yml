@@ -123,3 +123,27 @@ jobs:
           tags: ${{ env.TAGS }}
           build-args: |
             REACT_APP_URL=http://g4tastybyteslb-488912386.ap-southeast-1.elb.amazonaws.com:8000
+
+  deploy-to-ecs:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Update Backend ECS Service
+        run: |
+          ecs_task_definition=$(aws ecs describe-services --cluster ${{ secrets.AWS_ECS_CLUSTER_NAME }} --services ${{ secrets.AWS_ECS_SERVICE_NAME_BACKEND }} --query "services[0].taskDefinition" --output text)
+          aws ecs update-service --cluster ${{ secrets.AWS_ECS_CLUSTER_NAME }} --service ${{ secrets.AWS_ECS_SERVICE_NAME_BACKEND }} --force-new-deployment --task-definition $ecs_task_definition
+
+      - name: Update Frontend ECS Service
+        run: |
+          ecs_task_definition=$(aws ecs describe-services --cluster ${{ secrets.AWS_ECS_CLUSTER_NAME }} --services ${{ secrets.AWS_ECS_SERVICE_NAME_FRONTEND }} --query "services[0].taskDefinition" --output text)
+          aws ecs update-service --cluster ${{ secrets.AWS_ECS_CLUSTER_NAME }} --service ${{ secrets.AWS_ECS_SERVICE_NAME_FRONTEND }} --force-new-deployment --task-definition $ecs_task_definition
