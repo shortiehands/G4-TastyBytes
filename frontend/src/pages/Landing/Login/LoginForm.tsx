@@ -65,7 +65,6 @@ const LoginForm: React.FC<any> = () => {
       localStorage.setItem("username", data.tokens.username);
       localStorage.setItem("token", data.access_token);
       navigate("/" + paths.home);
-
     } catch (error) {
       setError("Error connecting to server");
       console.error("Login error:", error);
@@ -254,11 +253,7 @@ const LoginForm: React.FC<any> = () => {
                 </NavLinkStyled>
               </FormGroup> */}
             </Stack>
-            <CustomButton
-              title="LOGIN"
-              disabled={loading}
-              type="submit"
-            />
+            <CustomButton title="LOGIN" disabled={loading} type="submit" />
           </Form>
 
           <p

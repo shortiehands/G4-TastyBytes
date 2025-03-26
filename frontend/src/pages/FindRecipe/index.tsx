@@ -123,7 +123,7 @@ const FindRecipe = () => {
                       style={{ cursor: "pointer", width: "100%" }}
                       onClick={() =>
                         navigate(`/recipe-details/${recipe.id}`, {
-                          state: { recipe },
+                          state: { recipe, fromFind: true, searchTerm },
                         })
                       }
                     >

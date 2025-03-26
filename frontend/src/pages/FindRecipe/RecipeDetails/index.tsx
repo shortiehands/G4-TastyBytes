@@ -6,15 +6,19 @@ import { recipeItem } from "../recipeList";
 import CustomContainer from "../../../components/CustomContainer";
 import Title from "../../../components/Title";
 import RecipeReviews from "../RecipeReviews";
+import { Back } from "iconsax-react";
 
 interface LocationState {
   recipe: recipeItem;
   fromFind: boolean;
+  searchTerm: string;
 }
 
 const RecipeDetails = () => {
   const { state } = useLocation() as { state: LocationState };
   const recipe = state?.recipe;
+  const fromFind = state?.fromFind;
+  const searchTerm = state?.searchTerm;
 
   return (
     <>
@@ -23,6 +27,7 @@ const RecipeDetails = () => {
           <p style={{ color: "red" }}>Recipe data not found.</p>
         ) : (
           <>
+            <Back size={15} color="black" />
             <Title title="Recipe Details" className="center" />
             <Row className="mb-4">
               {recipe && (

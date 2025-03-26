@@ -142,7 +142,7 @@ const SignUpForm: React.FC = () => {
       formData.append("confirmation_code", otp);
 
       const response = await axios.post(
-        "http://127.0.0.1:8000/confirmation",
+        `${BASE_URL}/confirmation`,
         formData,
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
       );
