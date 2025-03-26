@@ -26,6 +26,8 @@ import axios from "axios";
 import ModalResult from "../../../components/ModalResult";
 import { paths } from "../../../configs/routes";
 
+const BASE_URL = process.env.BACKEND_URL;
+
 const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -104,7 +106,7 @@ const SignUpForm: React.FC = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/registration", // Replace with backend URL
+        `${BASE_URL}/registration`, // Replace with backend URL
         new URLSearchParams({ username, email, password }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
       );

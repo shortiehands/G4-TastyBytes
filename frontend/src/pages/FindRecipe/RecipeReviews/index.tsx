@@ -15,7 +15,7 @@ import {
 } from "react-bootstrap";
 import { paths } from "../../../configs/routes";
 
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = process.env.BACKEND_URL;
 
 interface ReviewProps {
   recipeId: number;

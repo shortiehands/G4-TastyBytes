@@ -1,7 +1,6 @@
 import React from "react";
 import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
-import { Row } from "react-bootstrap";
 
 const Profile = () => {
   const username = localStorage.getItem("username");

@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Title from "../../components/Title";
 import CustomContainer from "../../components/CustomContainer";
-import { Form, Button, Table, Row, Col, Card } from "react-bootstrap";
+import { Form, Button, Row, Card } from "react-bootstrap";
 import TextField from "../../components/FormLayout/TextField";
 import { recipeItem } from "./recipeList";
 import ShowRecipes from "./showRecipes";
-import { CardStyled, ColStyled, UserRecipesDiv } from "./styles";
+import { CardStyled, ColStyled } from "./styles";
 import { useNavigate } from "react-router-dom";
-import { paths } from "../../configs/routes";
 
-// Update to your actual backend URL
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = process.env.BACKEND_URL;
 
 const FindRecipe = () => {
   const navigate = useNavigate();

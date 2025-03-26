@@ -1,6 +1,5 @@
 import React, {useEffect} from "react";
 import { useNavigate } from "react-router";
-import { allowSearchParamsPaths } from "../../configs/routes";
 import { paths } from "../../configs/routes";
 
 const Redirect = ({to}: {to: string}) => {
@@ -13,9 +12,6 @@ const Redirect = ({to}: {to: string}) => {
 const baseRouterPath = ((path) => (path ? `/${path}` : ""))(
     process.env.REACT_APP_BASE_PATH?.replace("/", "").trim()
   );
-
-const allowSearchParams = (currentPath: string) =>
-    allowSearchParamsPaths.includes(currentPath);
 
 const getRelativePath = (currentPath: string) =>
     currentPath.replace(`/`, "").trim();
@@ -37,5 +33,4 @@ export {
     getRelativePath,
     isValidPath,
     navigate,
-    allowSearchParams,
   };

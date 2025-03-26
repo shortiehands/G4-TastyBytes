@@ -22,6 +22,8 @@ import { paths } from "../../../configs/routes";
 import CustomButton from "../../../components/CustomButton";
 import axios from "axios";
 
+const BASE_URL = process.env.BACKEND_URL;
+
 const LoginForm: React.FC<any> = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
@@ -53,7 +55,7 @@ const LoginForm: React.FC<any> = () => {
     }
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/login",
+        `${BASE_URL}/login`,
         new URLSearchParams({ username, password }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
       );

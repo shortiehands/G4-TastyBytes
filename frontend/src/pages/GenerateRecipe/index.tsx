@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import TextField from "../../components/FormLayout/TextField";
-import { Button, Card, Col, Form, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Form, ListGroup, Row } from "react-bootstrap";
 import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
-import { ColStyled, ErrorTextStyled, HeaderText } from "./styles";
-import { InfoCircle } from "iconsax-react";
+import { ColStyled, HeaderText } from "./styles";
+
+const BASE_URL = process.env.BACKEND_URL;
 
 interface RecipeResponse {
   recipe_name: string;
@@ -24,7 +25,7 @@ const GenerateRecipe = () => {
 
   // Call the FastAPI endpoint to generate a recipe from the prompt
   const generateRecipe = async (prompt: string): Promise<RecipeResponse> => {
-    const response = await fetch("http://localhost:8000/ai/generate_recipe/", {
+    const response = await fetch(`${BASE_URL}/ai/generate_recipe/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

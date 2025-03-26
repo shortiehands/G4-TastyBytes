@@ -2,9 +2,7 @@ import React from "react";
 import { useLocation } from "react-router";
 import { paths } from "../../configs/routes";
 import {
-  allowSearchParams,
   getRelativePath,
-  isValidPath,
   navigate,
   baseRouterPath,
 } from "./common";
