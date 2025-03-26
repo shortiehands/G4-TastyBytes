@@ -22,7 +22,8 @@ import { paths } from "../../../configs/routes";
 import CustomButton from "../../../components/CustomButton";
 import axios from "axios";
 
-const BASE_URL = process.env.BACKEND_URL;
+const BASE_URL = process.env.REACT_APP_URL;
+// const BASE_URL = "http://localhost:8000";
 
 const LoginForm: React.FC<any> = () => {
   const navigate = useNavigate();

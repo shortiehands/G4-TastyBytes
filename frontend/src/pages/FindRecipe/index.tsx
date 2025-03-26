@@ -8,7 +8,8 @@ import ShowRecipes from "./showRecipes";
 import { CardStyled, ColStyled } from "./styles";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = process.env.BACKEND_URL;
+const BASE_URL = process.env.REACT_APP_URL;
+// const BASE_URL = "http://localhost:8000";
 
 const FindRecipe = () => {
   const navigate = useNavigate();

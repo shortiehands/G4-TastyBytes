@@ -5,7 +5,8 @@ import CustomContainer from "../../components/CustomContainer";
 import Title from "../../components/Title";
 import { ColStyled, HeaderText } from "./styles";
 
-const BASE_URL = process.env.BACKEND_URL;
+const BASE_URL = process.env.REACT_APP_URL;
+// const BASE_URL = "http://localhost:8000";
 
 interface RecipeResponse {
   recipe_name: string;
